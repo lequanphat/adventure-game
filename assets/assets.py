@@ -6,12 +6,15 @@ font_score = pygame.font.SysFont('Bauhaus 93', 30)
 #load images   
 sun_img = pygame.image.load('./resources/img/sun.png')
 bg_img = pygame.image.load('./resources/img/sky.png')
+bg_imgSetting = pygame.transform.scale(bg_img , (600,600))
 restart_img = pygame.image.load('./resources/img/restart_btn.png')
 start_img = pygame.image.load('./resources/img/start_btn.png')
 exit_img = pygame.image.load('./resources/img/exit_btn.png')
+save_img = pygame.image.load('./resources/img/save_btn.png')
+load_img = pygame.image.load('./resources/img/load_btn.png')
 # scale image 
-start_img = pygame.transform.scale(start_img , (200,100))
-exit_img = pygame.transform.scale(exit_img , (200,100))
+start_img = pygame.transform.scale(start_img , (180,90))
+exit_img = pygame.transform.scale(exit_img , (180,90))
 #load sounds
 pygame.mixer.music.load('./resources/audio/music.wav')
 pygame.mixer.music.play(-1, 0.0, 5000)

@@ -20,20 +20,20 @@ pygame.display.set_caption('Level Editor')
 
 
 #load images
-sun_img = pygame.image.load('img/sun.png')
+sun_img = pygame.image.load('./resources/img/sun.png')
 sun_img = pygame.transform.scale(sun_img, (tile_size, tile_size))
-bg_img = pygame.image.load('img/sky.png')
+bg_img = pygame.image.load('./resources/img/sky.png')
 bg_img = pygame.transform.scale(bg_img, (screen_width, screen_height - margin))
-dirt_img = pygame.image.load('img/dirt.png')
-grass_img = pygame.image.load('img/grass.png')
-blob_img = pygame.image.load('img/blob.png')
-platform_x_img = pygame.image.load('img/platform_x.png')
-platform_y_img = pygame.image.load('img/platform_y.png')
-lava_img = pygame.image.load('img/lava.png')
-coin_img = pygame.image.load('img/coin.png')
-exit_img = pygame.image.load('img/exit.png')
-save_img = pygame.image.load('img/save_btn.png')
-load_img = pygame.image.load('img/load_btn.png')
+dirt_img = pygame.image.load('./resources/img/dirt.png')
+grass_img = pygame.image.load('./resources/img/grass.png')
+blob_img = pygame.image.load('./resources/img/blob.png')
+platform_x_img = pygame.image.load('./resources/img/platform_x.png')
+platform_y_img = pygame.image.load('./resources/img/platform_y.png')
+lava_img = pygame.image.load('./resources/img/lava.png')
+coin_img = pygame.image.load('./resources/img/coin.png')
+lava_img = pygame.image.load('./resources/img/lava.png')
+coin_img = pygame.image.load('./resources/img/coin.png')
+exit_img = pygame.image.load('./resources/img/exit.png')
 
 
 #define game variables
@@ -137,10 +137,12 @@ class Button():
 		screen.blit(self.image, (self.rect.x, self.rect.y))
 
 		return action
-
+	
+save_img = pygame.image.load('./resources/img/save_btn.png')
+load_img = pygame.image.load('./resources/img/load_btn.png')
 #create load and save buttons
-save_button = Button(screen_width // 2 - 150, screen_height - 80, save_img)
-load_button = Button(screen_width // 2 + 50, screen_height - 80, load_img)
+save_button = Button( screen_width // 2 - 150, screen_height - 80, save_img)
+load_button = Button( screen_width // 2 + 50, screen_height - 80, load_img)
 
 #main game loop
 run = True
@@ -156,14 +158,14 @@ while run:
 	#load and save level
 	if save_button.draw():
 		#save level data
-		pickle_out = open(f'level{level}_data', 'wb')
+		pickle_out = open(f'./env/level{level}_data', 'wb')
 		pickle.dump(world_data, pickle_out)
 		pickle_out.close()
 		print('Save data here')
 	if load_button.draw():
 		#load in level data
-		if path.exists(f'level{level}_data'):
-			pickle_in = open(f'level{level}_data', 'rb')
+		if path.exists(f'./env/level{level}_data'):
+			pickle_in = open(f'./env/level{level}_data', 'rb')
 			world_data = pickle.load(pickle_in)
 
 
