@@ -18,6 +18,13 @@ from env.constants import green
 from assets.assets import bg_img
 from assets.assets import sun_img
 from assets.assets import bg_imgSetting
+from assets.assets import play_btn
+from assets.assets import exit_btn
+from assets.assets import setting_btn
+from assets.assets import back_btn
+from assets.assets import save_btn
+from assets.assets import load_btn
+from assets.assets import restart_btn
 
 from assets.assets import blob_group
 from assets.assets import lava_group
@@ -28,11 +35,7 @@ from assets.assets import coin_fx
 # import font
 from assets.assets import font
 from assets.assets import font_score
-from assets.assets import restart_img
-from assets.assets import start_img
-from assets.assets import exit_img
-from assets.assets import save_img
-from assets.assets import load_img
+
 
 
 
@@ -71,22 +74,16 @@ lava_img = pygame.image.load('./resources/img/lava.png')
 coin_img = pygame.image.load('./resources/img/coin.png')
 exit_img2 = pygame.image.load('./resources/img/exit.png')
 
-#create load and save buttons
-save_button = Button(screen, screen_width // 2 - 150, screen_height - 70, save_img)
-load_button = Button(screen, screen_width // 2 + 50, screen_height - 70, load_img)
-back_button = Button(screen, screen_width // 2 - 300, screen_height - 70, load_img)
-
-
-
-
-
-
-
 #create buttons
-restart_button = Button(screen, screen_width // 2 - 50, screen_height // 2 + 100, restart_img)
-start_button = Button(screen, screen_width // 2 - 350, screen_height // 2, start_img)
-exit_button = Button(screen, screen_width // 2 + 150, screen_height // 2, exit_img)
-setting_button = Button(screen, screen_width // 2 -100 , screen_height // 2, exit_img)
+# for edit
+load_button = Button(screen, screen_width - 165, 30, load_btn)
+save_button = Button(screen, screen_width - 165, 80, save_btn)
+back_button = Button(screen, screen_width - 165, 130, back_btn)
+# for game
+restart_button = Button(screen, screen_width // 2 - 50, screen_height // 2 + 100, restart_btn)
+start_button = Button(screen, screen_width // 2 - 350, screen_height // 2, play_btn)
+exit_button = Button(screen, screen_width // 2 + 150, screen_height // 2, exit_btn)
+setting_button = Button(screen, screen_width // 2 -100 , screen_height // 2, setting_btn)
 
 
 #create dummy coin for showing the score
@@ -352,6 +349,8 @@ while run:
 			pickle.dump(world_data, pickle_out)
 			pickle_out.close()
 			print('Save data here')
+			world = World(screen, world_data, blob_group, platform_group, lava_group, coin_group, exit_group)
+			player = Player(screen, 100, screen_height - 130)
 		if load_button.draw():
 			#load in level data
 			if path.exists(f'./env/level{level}_data'):
@@ -408,6 +407,7 @@ while run:
 
 		# end
 	else:
+		
 		world.draw()
 		if game_over == 0:
 			blob_group.update()
@@ -417,7 +417,7 @@ while run:
 			if pygame.sprite.spritecollide(player, coin_group, True):
 				score += 1
 				coin_fx.play()
-			draw_text('X ' + str(score), font_score, white, tile_size - 10, 10)
+			draw_text('X ' + str(score), font_score, white, tile_size , 5)
 		
 		blob_group.draw(screen)
 		platform_group.draw(screen)

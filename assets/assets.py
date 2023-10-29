@@ -7,14 +7,27 @@ font_score = pygame.font.SysFont('Bauhaus 93', 30)
 sun_img = pygame.image.load('./resources/img/sun.png')
 bg_img = pygame.image.load('./resources/img/sky.png')
 bg_imgSetting = pygame.transform.scale(bg_img , (600,600))
-restart_img = pygame.image.load('./resources/img/restart_btn.png')
-start_img = pygame.image.load('./resources/img/start_btn.png')
-exit_img = pygame.image.load('./resources/img/exit_btn.png')
-save_img = pygame.image.load('./resources/img/save_btn.png')
-load_img = pygame.image.load('./resources/img/load_btn.png')
-# scale image 
-start_img = pygame.transform.scale(start_img , (180,90))
-exit_img = pygame.transform.scale(exit_img , (180,90))
+
+
+
+play_btn = pygame.image.load('./resources/img/play_btn.png')
+exit_btn = pygame.image.load('./resources/img/exit_btn.png')
+setting_btn = pygame.image.load('./resources/img/setting_btn.png')
+back_btn = pygame.image.load('./resources/img/back_btn.png')
+save_btn = pygame.image.load('./resources/img/save_btn.png')
+load_btn = pygame.image.load('./resources/img/load_btn.png')
+restart_btn = pygame.image.load('./resources/img/restart_btn.png')
+
+
+save_btn = pygame.transform.scale(save_btn , (130,40))
+back_btn = pygame.transform.scale(back_btn , (130,40))
+load_btn = pygame.transform.scale(load_btn , (130,40))
+
+setting_btn = pygame.transform.scale(setting_btn , (180,60))
+play_btn = pygame.transform.scale(play_btn , (180,60))
+exit_btn = pygame.transform.scale(exit_btn , (180,60))
+
+
 #load sounds
 pygame.mixer.music.load('./resources/audio/music.wav')
 pygame.mixer.music.play(-1, 0.0, 5000)
