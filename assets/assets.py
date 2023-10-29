@@ -17,6 +17,7 @@ back_btn = pygame.image.load('./resources/img/back_btn.png')
 save_btn = pygame.image.load('./resources/img/save_btn.png')
 load_btn = pygame.image.load('./resources/img/load_btn.png')
 restart_btn = pygame.image.load('./resources/img/restart_btn.png')
+menu_btn = pygame.image.load('./resources/img/menu_btn.png')
 
 
 save_btn = pygame.transform.scale(save_btn , (130,40))

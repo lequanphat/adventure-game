@@ -25,6 +25,7 @@ from assets.assets import back_btn
 from assets.assets import save_btn
 from assets.assets import load_btn
 from assets.assets import restart_btn
+from assets.assets import menu_btn
 
 from assets.assets import blob_group
 from assets.assets import lava_group
@@ -81,6 +82,7 @@ save_button = Button(screen, screen_width - 165, 80, save_btn)
 back_button = Button(screen, screen_width - 165, 130, back_btn)
 # for game
 restart_button = Button(screen, screen_width // 2 - 50, screen_height // 2 + 100, restart_btn)
+menu_button = Button(screen, screen_width // 2 - 50, screen_height // 2 + 200, menu_btn)
 start_button = Button(screen, screen_width // 2 - 350, screen_height // 2, play_btn)
 exit_button = Button(screen, screen_width // 2 + 150, screen_height // 2, exit_btn)
 setting_button = Button(screen, screen_width // 2 -100 , screen_height // 2, setting_btn)
@@ -349,8 +351,7 @@ while run:
 			pickle.dump(world_data, pickle_out)
 			pickle_out.close()
 			print('Save data here')
-			world = World(screen, world_data, blob_group, platform_group, lava_group, coin_group, exit_group)
-			player = Player(screen, 100, screen_height - 130)
+			world = reset_level(player, level)
 		if load_button.draw():
 			#load in level data
 			if path.exists(f'./env/level{level}_data'):
@@ -432,6 +433,12 @@ while run:
 				world = reset_level(player,  level)
 				game_over = 0
 				score = 0
+			if menu_button.draw():
+				world_data = []
+				world = reset_level(player,  level)
+				main_menu = True
+				game_over = 0
+				score = 0
 
 		#if player has completed the level
 		if game_over == 1:
@@ -448,8 +455,15 @@ while run:
 					level = 1
 					#reset level
 					world_data = []
-					
 					world = reset_level(player, level)
+					game_over = 0
+					score = 0
+				if menu_button.draw():
+					level = 1
+					#reset level
+					world_data = []
+					world = reset_level(player, level)
+					main_menu = True
 					game_over = 0
 					score = 0
 
