@@ -18,8 +18,8 @@ class World():
 		self.exit_group = exit_group
 
 		#load images
-		dirt_img = pygame.image.load('./src/resources/img/dirt.png')
-		grass_img = pygame.image.load('./src/resources/img/grass.png')
+		dirt_img = pygame.image.load('./resources/img/dirt.png')
+		grass_img = pygame.image.load('./resources/img/grass.png')
 
 		row_count = 0
 		for row in data:

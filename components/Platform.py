@@ -3,7 +3,7 @@ from env.constants import tile_size
 class Platform(pygame.sprite.Sprite):
 	def __init__(self, x, y, move_x, move_y):
 		pygame.sprite.Sprite.__init__(self)
-		img = pygame.image.load('./src/resources/img/platform.png')
+		img = pygame.image.load('./resources/img/platform.png')
 		self.image = pygame.transform.scale(img, (tile_size, tile_size // 2))
 		self.rect = self.image.get_rect()
 		self.rect.x = x
