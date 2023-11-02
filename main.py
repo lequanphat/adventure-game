@@ -174,6 +174,7 @@ def load_world_data():
 		pickle_in = open(f'./env/level{level}_data', 'rb')
 		world_data = pickle.load(pickle_in)
 		return world_data
+	
 def load_background():
 	my_background = background[random.randint(0,1)]
 	return my_background
@@ -198,10 +199,12 @@ class Player():
 			#get keypresses
 			key = pygame.key.get_pressed()
 			if pedding == False:
+
 				if key[pygame.K_SPACE] and self.jumped == False and self.in_air == False:
 					jump_fx.play()
 					self.vel_y = -15
 					self.jumped = True
+
 				if key[pygame.K_SPACE] == False:
 					self.jumped = False
 				if key[pygame.K_LEFT]:
@@ -220,7 +223,6 @@ class Player():
 					if self.direction == -1:
 						self.image = self.images_left[self.index]
 
-
 			#handle animation
 			if self.counter > walk_cooldown:
 				self.counter = 0	
@@ -231,7 +233,6 @@ class Player():
 					self.image = self.images_right[self.index]
 				if self.direction == -1:
 					self.image = self.images_left[self.index]
-
 
 			#add gravity
 			self.vel_y += 1
@@ -317,12 +318,14 @@ class Player():
 		self.images_left = []
 		self.index = 0
 		self.counter = 0
+
 		for num in range(1, 5):
 			img_right = pygame.image.load(f'./resources/img/guy{num}.png')
 			img_right = pygame.transform.scale(img_right, (32, 68))
 			img_left = pygame.transform.flip(img_right, True, False)
 			self.images_right.append(img_right)
 			self.images_left.append(img_left)
+
 		self.dead_image = pygame.image.load('./resources/img/ghost.png')
 		self.image = self.images_right[self.index]
 		self.rect = self.image.get_rect()
@@ -432,6 +435,7 @@ while run:
 			platform_group.update()
 			#update score
 			#check if a coin has been collected
+			
 			if pygame.sprite.spritecollide(player, coin_group, True):
 				score += 1
 				coin_fx.play()

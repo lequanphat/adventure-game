@@ -1,3 +1,5 @@
+
+
 import pygame
 from env.constants import tile_size
 class Coin(pygame.sprite.Sprite):

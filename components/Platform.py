@@ -1,3 +1,5 @@
+
+
 import pygame
 from env.constants import tile_size
 class Platform(pygame.sprite.Sprite):
@@ -21,3 +23,8 @@ class Platform(pygame.sprite.Sprite):
 		if abs(self.move_counter) > 50:
 			self.move_direction *= -1
 			self.move_counter *= -1
+
+
+
+
+			
