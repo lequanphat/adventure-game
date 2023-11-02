@@ -19,6 +19,7 @@ from env.constants import green
 from assets.assets import background
 from assets.assets import sun_img
 from assets.assets import setting_background
+from assets.assets import menu_background
 from assets.assets import play_btn
 from assets.assets import exit_btn
 from assets.assets import setting_btn
@@ -340,7 +341,7 @@ player = Player(screen, 100, screen_height - 130)
 
 while run:
 	clock.tick(fps) 
-	screen.blit(my_background, (0, 0))
+	screen.blit(menu_background, (0, 0))
 	
 	# screen.blit(sun_img, (100, 100))
 
@@ -424,6 +425,7 @@ while run:
 
 		# end
 	else:
+		screen.blit(my_background, (0, 0))
 		world.draw()
 		if game_over == 0:
 			blob_group.update()
