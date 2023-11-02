@@ -9,7 +9,7 @@ bg_img = pygame.image.load('./resources/img/sky.png')
 background2 = pygame.image.load('./resources/img/background2.jpg')
 logo = pygame.image.load('./resources/img/logo.png')
 setting_background = pygame.transform.scale(bg_img , (600,600))
-background2 = pygame.transform.scale(bg_img , (800,800))
+background2 = pygame.transform.scale(background2 , (800,800))
 
 
 

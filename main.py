@@ -72,7 +72,7 @@ setting_menu = False
 level = 1
 max_levels = 7
 score = 0
-
+pedding=False
 # init screen
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Platformer')
@@ -192,27 +192,28 @@ class Player():
 		if game_over == 0:
 			#get keypresses
 			key = pygame.key.get_pressed()
-			if key[pygame.K_SPACE] and self.jumped == False and self.in_air == False:
-				jump_fx.play()
-				self.vel_y = -15
-				self.jumped = True
-			if key[pygame.K_SPACE] == False:
-				self.jumped = False
-			if key[pygame.K_LEFT]:
-				dx -= 5
-				self.counter += 1
-				self.direction = -1
-			if key[pygame.K_RIGHT]:
-				dx += 5
-				self.counter += 1
-				self.direction = 1
-			if key[pygame.K_LEFT] == False and key[pygame.K_RIGHT] == False:
-				self.counter = 0
-				self.index = 0
-				if self.direction == 1:
-					self.image = self.images_right[self.index]
-				if self.direction == -1:
-					self.image = self.images_left[self.index]
+			if pedding == False:
+				if key[pygame.K_SPACE] and self.jumped == False and self.in_air == False:
+					jump_fx.play()
+					self.vel_y = -15
+					self.jumped = True
+				if key[pygame.K_SPACE] == False:
+					self.jumped = False
+				if key[pygame.K_LEFT]:
+					dx -= 5
+					self.counter += 1
+					self.direction = -1
+				if key[pygame.K_RIGHT]:
+					dx += 5
+					self.counter += 1
+					self.direction = 1
+				if key[pygame.K_LEFT] == False and key[pygame.K_RIGHT] == False:
+					self.counter = 0
+					self.index = 0
+					if self.direction == 1:
+						self.image = self.images_right[self.index]
+					if self.direction == -1:
+						self.image = self.images_left[self.index]
 
 
 			#handle animation
@@ -438,6 +439,22 @@ while run:
 		coin_group.draw(screen)
 		exit_group.draw(screen)
 		game_over = player.update(game_over)
+		# if you click ESC
+		if event.type == pygame.KEYDOWN:
+			if event.key == pygame.K_ESCAPE:
+				pedding = True
+		# pedding state
+		if pedding==True:
+			if restart_button.draw():
+				pedding=False
+			if menu_button.draw():
+				world_data = load_world_data()
+				world = reset_level(player,  level)
+				game_over = 0
+				score = 0
+				main_menu = True
+				pedding=False
+
 		#if player has died
 		if game_over == -1:
 			if restart_button.draw():
