@@ -6,8 +6,10 @@ font_score = pygame.font.SysFont('Bauhaus 93', 30)
 #load images   
 sun_img = pygame.image.load('./resources/img/sun.png')
 bg_img = pygame.image.load('./resources/img/sky.png')
+background2 = pygame.image.load('./resources/img/background2.jpg')
 logo = pygame.image.load('./resources/img/logo.png')
-bg_imgSetting = pygame.transform.scale(bg_img , (600,600))
+setting_background = pygame.transform.scale(bg_img , (600,600))
+background2 = pygame.transform.scale(bg_img , (800,800))
 
 
 
@@ -48,3 +50,13 @@ exit_group = pygame.sprite.Group()
 
 
 
+# for editer
+margin = 200
+dirt_img = pygame.image.load('./resources/img/dirt.png')
+grass_img = pygame.image.load('./resources/img/grass.png')
+blob_img = pygame.image.load('./resources/img/blob.png')
+platform_x_img = pygame.image.load('./resources/img/platform_x.png')
+platform_y_img = pygame.image.load('./resources/img/platform_y.png')
+lava_img = pygame.image.load('./resources/img/lava.png')
+coin_img = pygame.image.load('./resources/img/coin.png')
+exit_img2 = pygame.image.load('./resources/img/exit.png')

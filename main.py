@@ -16,8 +16,9 @@ from env.constants import green
 
 # import img
 from assets.assets import bg_img
+from assets.assets import background2
 from assets.assets import sun_img
-from assets.assets import bg_imgSetting
+from assets.assets import setting_background
 from assets.assets import play_btn
 from assets.assets import exit_btn
 from assets.assets import setting_btn
@@ -45,6 +46,18 @@ from components.Coin import Coin
 from components.World import World
 from components.Button import Button
 
+# for editor
+# for editer
+from assets.assets import margin
+from assets.assets import dirt_img 
+from assets.assets import grass_img 
+from assets.assets import blob_img 
+from assets.assets import platform_x_img 
+from assets.assets import platform_y_img 
+from assets.assets import lava_img 
+from assets.assets import coin_img 
+from assets.assets import exit_img2 
+
 
 
 pygame.mixer.pre_init(44100, -16, 2, 512)
@@ -65,16 +78,7 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Platformer')
 
 
-# for editer
-margin = 200
-dirt_img = pygame.image.load('./resources/img/dirt.png')
-grass_img = pygame.image.load('./resources/img/grass.png')
-blob_img = pygame.image.load('./resources/img/blob.png')
-platform_x_img = pygame.image.load('./resources/img/platform_x.png')
-platform_y_img = pygame.image.load('./resources/img/platform_y.png')
-lava_img = pygame.image.load('./resources/img/lava.png')
-coin_img = pygame.image.load('./resources/img/coin.png')
-exit_img2 = pygame.image.load('./resources/img/exit.png')
+
 
 #create buttons
 # for edit
@@ -109,9 +113,7 @@ def reset_level(player,  level):
 	exit_group.empty()
 	player.reset(100, screen_height - 130)
 	#load in level data and create world
-	if path.exists(f'./env/level{level}_data'):
-		pickle_in = open(f'./env/level{level}_data', 'rb')
-		world_data = pickle.load(pickle_in)
+	world_data = load_world_data()
 	world = World(screen, world_data, blob_group, platform_group, lava_group, coin_group, exit_group)
 	#create dummy coin for showing the score
 	score_coin = Coin(tile_size // 2, tile_size // 2)
@@ -333,7 +335,8 @@ player = Player(screen, 100, screen_height - 130)
 
 while run:
 	clock.tick(fps) 
-	screen.blit(bg_img, (0, 0))
+	# screen.blit(bg_img, (0, 0))
+	screen.blit(background2, (0, 0))
 	screen.blit(sun_img, (100, 100))
 
 	if main_menu == True:
@@ -351,7 +354,7 @@ while run:
 	elif setting_menu == True:
 		#draw background
 		screen.fill(green)
-		screen.blit(bg_imgSetting, (0,0))
+		screen.blit(setting_background, (0,0))
 		screen.blit(sun_img, (tile_size * 2 + 100, tile_size * 2+ 50))
 		#load and save level
 		if save_button.draw():
@@ -443,7 +446,7 @@ while run:
 				game_over = 0
 				score = 0
 			if menu_button.draw():
-				world_data =[]
+				world_data = load_world_data()
 				world = reset_level(player,  level)
 				game_over = 0
 				score = 0
@@ -470,7 +473,7 @@ while run:
 				if menu_button.draw():
 					level = 1
 					#reset level
-					world_data = []
+					world_data = load_world_data()
 					world = reset_level(player, level)
 					main_menu = True
 					game_over = 0
