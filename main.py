@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 from os import path
 import pickle
+import random
 from pygame import mixer
 from assets.assets import game_over_fx
 from assets.assets import jump_fx
@@ -15,8 +16,7 @@ from env.constants import blue
 from env.constants import green
 
 # import img
-from assets.assets import bg_img
-from assets.assets import background2
+from assets.assets import background
 from assets.assets import sun_img
 from assets.assets import setting_background
 from assets.assets import play_btn
@@ -73,6 +73,7 @@ level = 1
 max_levels = 7
 score = 0
 pedding=False
+my_background = background[0]
 # init screen
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Platformer')
@@ -86,8 +87,8 @@ load_button = Button(screen, screen_width - 165, 30, load_btn)
 save_button = Button(screen, screen_width - 165, 80, save_btn)
 back_button = Button(screen, screen_width - 165, 130, back_btn)
 # for game
-restart_button = Button(screen, screen_width // 2 - 50, screen_height // 2 + 100, restart_btn)
-menu_button = Button(screen, screen_width // 2 - 50, screen_height // 2 + 200, menu_btn)
+restart_button = Button(screen, screen_width // 2 - 50, screen_height // 2 - 100, restart_btn)
+menu_button = Button(screen, screen_width // 2 - 50, screen_height // 2 - 20, menu_btn)
 
 
 start_button = Button(screen, screen_width // 2 - 120, 360, play_btn)
@@ -172,6 +173,9 @@ def load_world_data():
 		pickle_in = open(f'./env/level{level}_data', 'rb')
 		world_data = pickle.load(pickle_in)
 		return world_data
+def load_background():
+	my_background = background[random.randint(0,2)]
+	return my_background
 
 class Player():
 	def __init__(self, screen,  x, y):
@@ -296,7 +300,7 @@ class Player():
 
 		elif game_over == -1:
 			self.image = self.dead_image
-			draw_text('GAME OVER!', font, blue, (screen_width // 2) - 200, screen_height // 2)
+			draw_text('GAME OVER!', font, blue, (screen_width // 2) - 180, screen_height // 2 - 215 )
 			if self.rect.y > 200:
 				self.rect.y -= 5
 
@@ -336,9 +340,9 @@ player = Player(screen, 100, screen_height - 130)
 
 while run:
 	clock.tick(fps) 
-	# screen.blit(bg_img, (0, 0))
-	screen.blit(background2, (0, 0))
-	screen.blit(sun_img, (100, 100))
+	screen.blit(my_background, (0, 0))
+	
+	# screen.blit(sun_img, (100, 100))
 
 	if main_menu == True:
 		#draw logo
@@ -414,14 +418,12 @@ while run:
 					level += 1
 				elif event.key == pygame.K_DOWN and level > 1:
 					level -= 1
-
 		#update game display window
 		pygame.display.update()
 
 
 		# end
 	else:
-		
 		world.draw()
 		if game_over == 0:
 			blob_group.update()
@@ -475,6 +477,7 @@ while run:
 			level += 1
 			if level <= max_levels:
 				#reset level
+				my_background = load_background()
 				world_data = []
 				world = reset_level(player, level)
 				game_over = 0
