@@ -6,15 +6,13 @@ font_score = pygame.font.SysFont('Bauhaus 93', 30)
 #load images   
 sun_img = pygame.image.load('./resources/img/sun.png')
 background1 = pygame.image.load('./resources/img/sky.png')
-background2 = pygame.image.load('./resources/img/background2.jpg')
-background3 = pygame.image.load('./resources/img/background3.jpg')
+background2 = pygame.image.load('./resources/img/background3.jpg')
 pedding_frame = pygame.image.load('./resources/img/frame.png')
 logo = pygame.image.load('./resources/img/logo.png')
 setting_background = pygame.transform.scale(background1 , (600,600))
 background1 = pygame.transform.scale(background1 , (800,800))
 background2 = pygame.transform.scale(background2 , (800,800))
-background3 = pygame.transform.scale(background3 , (800,800))
-background = [background1, background2, background3]
+background = [background1, background2]
 
 
 play_btn = pygame.image.load('./resources/img/play_btn.png')

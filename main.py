@@ -174,7 +174,7 @@ def load_world_data():
 		world_data = pickle.load(pickle_in)
 		return world_data
 def load_background():
-	my_background = background[random.randint(0,2)]
+	my_background = background[random.randint(0,1)]
 	return my_background
 
 class Player():
