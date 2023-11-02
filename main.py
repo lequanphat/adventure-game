@@ -26,6 +26,7 @@ from assets.assets import save_btn
 from assets.assets import load_btn
 from assets.assets import restart_btn
 from assets.assets import menu_btn
+from assets.assets import logo
 
 from assets.assets import blob_group
 from assets.assets import lava_group
@@ -83,9 +84,11 @@ back_button = Button(screen, screen_width - 165, 130, back_btn)
 # for game
 restart_button = Button(screen, screen_width // 2 - 50, screen_height // 2 + 100, restart_btn)
 menu_button = Button(screen, screen_width // 2 - 50, screen_height // 2 + 200, menu_btn)
-start_button = Button(screen, screen_width // 2 - 350, screen_height // 2, play_btn)
-exit_button = Button(screen, screen_width // 2 + 150, screen_height // 2, exit_btn)
-setting_button = Button(screen, screen_width // 2 -100 , screen_height // 2, setting_btn)
+
+
+start_button = Button(screen, screen_width // 2 - 120, 360, play_btn)
+setting_button = Button(screen, screen_width // 2 - 120 , 500, setting_btn)
+exit_button = Button(screen, screen_width // 2 - 120, 640 , exit_btn)
 
 
 #create dummy coin for showing the score
@@ -98,6 +101,7 @@ def draw_text(text, font, text_col, x, y):
 
 #function to reset level
 def reset_level(player,  level):
+	print('level: '+str(level))
 	blob_group.empty()
 	platform_group.empty()
 	coin_group.empty()
@@ -122,6 +126,7 @@ def draw_grid():
 
 
 def draw_world():
+	
 	for row in range(20):
 		for col in range(20):
 			if world_data[row][col] > 0:
@@ -160,9 +165,11 @@ def draw_world():
 
 
 #load in level data and create world
-if path.exists(f'./env/level{level}_data'):
-	pickle_in = open(f'./env/level{level}_data', 'rb')
-	world_data = pickle.load(pickle_in)
+def load_world_data():
+	if path.exists(f'./env/level{level}_data'):
+		pickle_in = open(f'./env/level{level}_data', 'rb')
+		world_data = pickle.load(pickle_in)
+		return world_data
 
 class Player():
 	def __init__(self, screen,  x, y):
@@ -320,7 +327,7 @@ class Player():
 		self.direction = 0
 		self.in_air = True
 
-
+world_data = load_world_data()
 world = World(screen, world_data, blob_group, platform_group, lava_group, coin_group, exit_group)
 player = Player(screen, 100, screen_height - 130)
 
@@ -330,6 +337,9 @@ while run:
 	screen.blit(sun_img, (100, 100))
 
 	if main_menu == True:
+		#draw logo
+		screen.blit(logo, (screen_width // 2 - 200,20))
+		# handle logic
 		if exit_button.draw():
 			run = False
 		if start_button.draw():
@@ -343,7 +353,6 @@ while run:
 		screen.fill(green)
 		screen.blit(bg_imgSetting, (0,0))
 		screen.blit(sun_img, (tile_size * 2 + 100, tile_size * 2+ 50))
-
 		#load and save level
 		if save_button.draw():
 			#save level data
@@ -360,9 +369,9 @@ while run:
 		if back_button.draw():
 			setting_menu = False
 			main_menu = True
-
-
+		
 		#show the grid and draw the level tiles
+		
 		draw_grid()
 		draw_world()
 
@@ -434,11 +443,11 @@ while run:
 				game_over = 0
 				score = 0
 			if menu_button.draw():
-				world_data = []
+				world_data =[]
 				world = reset_level(player,  level)
-				main_menu = True
 				game_over = 0
 				score = 0
+				main_menu = True
 
 		#if player has completed the level
 		if game_over == 1:
