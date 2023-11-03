@@ -13,6 +13,7 @@ from env.constants import screen_height
 from env.constants import fps
 from env.constants import white
 from env.constants import blue
+from env.constants import yellow
 from env.constants import green
 
 # import img
@@ -71,7 +72,6 @@ game_over = 0
 main_menu = True
 setting_menu = False
 level = 1
-max_levels = 7
 score = 0
 pedding=False
 my_background = background[0]
@@ -200,21 +200,23 @@ class Player():
 			key = pygame.key.get_pressed()
 			if pedding == False:
 
-				if key[pygame.K_SPACE] and self.jumped == False and self.in_air == False:
+				if key[pygame.K_SPACE] and self.jumped == False  and self.in_air == False:
 					jump_fx.play()
 					self.vel_y = -15
 					self.jumped = True
-
 				if key[pygame.K_SPACE] == False:
 					self.jumped = False
+
 				if key[pygame.K_LEFT]:
 					dx -= 5
 					self.counter += 1
 					self.direction = -1
+
 				if key[pygame.K_RIGHT]:
 					dx += 5
 					self.counter += 1
 					self.direction = 1
+
 				if key[pygame.K_LEFT] == False and key[pygame.K_RIGHT] == False:
 					self.counter = 0
 					self.index = 0
@@ -243,43 +245,39 @@ class Player():
 			#check for collision
 			self.in_air = True
 			for tile in world.tile_list:
-				#check for collision in x direction
+
+
 				if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
 					dx = 0
-				#check for collision in y direction
+
 				if tile[1].colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
-					#check if below the ground i.e. jumping
 					if self.vel_y < 0:
 						dy = tile[1].bottom - self.rect.top
 						self.vel_y = 0
-					#check if above the ground i.e. falling
 					elif self.vel_y >= 0:
 						dy = tile[1].top - self.rect.bottom
 						self.vel_y = 0
 						self.in_air = False
 
 
-			#check for collision with enemies
 			if pygame.sprite.spritecollide(self, self.blob_group, False):
 				game_over = -1
 				game_over_fx.play()
 
-			#check for collision with lava
 			if pygame.sprite.spritecollide(self, self.lava_group, False):
 				game_over = -1
 				game_over_fx.play()
 
-			#check for collision with exit
 			if pygame.sprite.spritecollide(self, self.exit_group, False):
 				game_over = 1
 
 
-			#check for collision with platforms
+			
 			for platform in self.platform_group:
-				#collision in the x direction
+				
 				if platform.rect.colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
 					dx = 0
-				#collision in the y direction
+				
 				if platform.rect.colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
 					#check if below platform
 					if abs((self.rect.top + dy) - platform.rect.bottom) < col_thresh:
@@ -435,7 +433,7 @@ while run:
 			platform_group.update()
 			#update score
 			#check if a coin has been collected
-			
+
 			if pygame.sprite.spritecollide(player, coin_group, True):
 				score += 1
 				coin_fx.play()
@@ -448,10 +446,13 @@ while run:
 		exit_group.draw(screen)
 		game_over = player.update(game_over)
 		# if you click ESC
+
 		if event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_ESCAPE:
 				pedding = True
+
 		# pedding state
+		
 		if pedding==True:
 			if restart_button.draw():
 				pedding=False
@@ -464,6 +465,7 @@ while run:
 				pedding=False
 
 		#if player has died
+
 		if game_over == -1:
 			if restart_button.draw():
 				world_data = []
@@ -479,16 +481,16 @@ while run:
 
 		#if player has completed the level
 		if game_over == 1:
-			#reset game and go to next level
 			level += 1
-			if level <= max_levels:
-				#reset level
+
+			if load_world_data() != None:
 				my_background = load_background()
 				world_data = []
 				world = reset_level(player, level)
 				game_over = 0
+
 			else:
-				draw_text('YOU WIN!', font, blue, (screen_width // 2) - 140, screen_height // 2)
+				draw_text('YOU WIN!', font, yellow, (screen_width // 2) - 140, screen_height // 2 - 215)
 				if restart_button.draw():
 					level = 1
 					#reset level
