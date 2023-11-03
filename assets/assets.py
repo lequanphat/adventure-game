@@ -2,7 +2,7 @@ import pygame
 pygame.init()
 #define font
 font = pygame.font.SysFont('Bauhaus 93', 70)
-font_score = pygame.font.SysFont('Bauhaus 93', 30)
+font_score = pygame.font.SysFont('Bauhaus 93', 24)
 #load images   
 sun_img = pygame.image.load('./resources/img/sun.png')
 

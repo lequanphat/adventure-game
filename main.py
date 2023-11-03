@@ -437,7 +437,7 @@ while run:
 			if pygame.sprite.spritecollide(player, coin_group, True):
 				score += 1
 				coin_fx.play()
-			draw_text('X ' + str(score), font_score, white, tile_size , 5)
+			draw_text('X ' + str(score), font_score, white, tile_size , 6)
 		
 		blob_group.draw(screen)
 		platform_group.draw(screen)
@@ -452,7 +452,7 @@ while run:
 				pedding = True
 
 		# pedding state
-		
+
 		if pedding==True:
 			if restart_button.draw():
 				pedding=False
