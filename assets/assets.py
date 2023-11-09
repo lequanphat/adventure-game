@@ -1,11 +1,12 @@
 import pygame
 pygame.init()
 #define font
+
 font = pygame.font.SysFont('Bauhaus 93', 70)
 font_score = pygame.font.SysFont('Bauhaus 93', 24)
-#load images   
-sun_img = pygame.image.load('./resources/img/sun.png')
 
+
+#load images   
 
 background1 = pygame.image.load('./resources/img/background1.png')
 background2 = pygame.image.load('./resources/img/background2.jpg')
@@ -46,16 +47,10 @@ logo = pygame.transform.scale(logo , (400,300))
 
 pygame.mixer.music.load('./resources/audio/music.wav')
 pygame.mixer.music.play(-1, 0.0, 5000)
-
-
 coin_fx = pygame.mixer.Sound('./resources/audio/coin.wav')
 coin_fx.set_volume(0.5)
-
-
 jump_fx = pygame.mixer.Sound('./resources/audio/jump.wav')
 jump_fx.set_volume(0.5)
-
-
 game_over_fx = pygame.mixer.Sound('./resources/audio/game_over.wav')
 game_over_fx.set_volume(0.5)
 

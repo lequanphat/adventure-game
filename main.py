@@ -18,7 +18,6 @@ from env.constants import green
 
 # import img
 from assets.assets import background
-from assets.assets import sun_img
 from assets.assets import setting_background
 from assets.assets import menu_background
 from assets.assets import play_btn
@@ -169,12 +168,27 @@ def draw_world():
 
 
 #load in level data and create world
+def generate_new_world():
+	new_world = []
+	for i in range(0,20):
+		list = []
+		for j in range(0, 20):
+			list.append(0)
+		new_world.append(list)
+	for i in range(0,20):
+		new_world[0][i] = 1
+		new_world[19][i] = 1
+		new_world[i][0] = 1
+		new_world[i][19] = 1
+	return new_world
+
 def load_world_data():
 	if path.exists(f'./env/level{level}_data'):
 		pickle_in = open(f'./env/level{level}_data', 'rb')
 		world_data = pickle.load(pickle_in)
 		return world_data
 	
+
 def load_background():
 	my_background = background[random.randint(0,1)]
 	return my_background
@@ -362,29 +376,26 @@ while run:
 		#draw background
 		screen.fill(green)
 		screen.blit(setting_background, (0,0))
-		screen.blit(sun_img, (tile_size * 2 + 100, tile_size * 2+ 50))
 		#load and save level
 		if save_button.draw():
 			#save level data
 			pickle_out = open(f'./env/level{level}_data', 'wb')
 			pickle.dump(world_data, pickle_out)
 			pickle_out.close()
-			print('Save data here')
 			world = reset_level(player, level)
+			print('Save data here')
 		if load_button.draw():
 			#load in level data
-			if path.exists(f'./env/level{level}_data'):
-				pickle_in = open(f'./env/level{level}_data', 'rb')
-				world_data = pickle.load(pickle_in)
+			world_data = load_world_data()
+			if world_data == None:
+				world_data = generate_new_world()
 		if back_button.draw():
 			setting_menu = False
 			main_menu = True
 		
 		#show the grid and draw the level tiles
-		
 		draw_grid()
 		draw_world()
-
 
 		#text showing current level
 		draw_text(f'Level: {level}', pygame.font.SysFont('Futura', 32), white, 100, screen_height - 140)
@@ -396,6 +407,7 @@ while run:
 			if event.type == pygame.QUIT:
 				run = False
 			#mouseclicks to change tiles
+
 			if event.type == pygame.MOUSEBUTTONDOWN and clicked == False:
 				clicked = True
 				pos = pygame.mouse.get_pos()
@@ -412,6 +424,7 @@ while run:
 						world_data[y][x] -= 1
 						if world_data[y][x] < 0:
 							world_data[y][x] = 8
+							
 			if event.type == pygame.MOUSEBUTTONUP:
 				clicked = False
 			#up and down key presses to change level number
