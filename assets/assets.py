@@ -27,6 +27,8 @@ load_btn = pygame.transform.scale(load_btn , (130,40))
 setting_btn = pygame.transform.scale(setting_btn , (180,60))
 play_btn = pygame.transform.scale(play_btn , (180,60))
 exit_btn = pygame.transform.scale(exit_btn , (180,60))
+register_btn = pygame.transform.scale(play_btn, (180,60))
+statistic_btn = pygame.transform.scale(exit_btn, (180,60))
 
 
 #load sounds
