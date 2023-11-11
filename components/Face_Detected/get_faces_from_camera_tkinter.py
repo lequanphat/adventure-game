@@ -47,7 +47,7 @@ class Face_Register:
         self.font_step_title = tkFont.Font(family='Helvetica', size=15, weight='bold')
         self.font_warning = tkFont.Font(family='Helvetica', size=15, weight='bold')
 
-        self.path_photos_from_camera = "data/data_faces_from_camera/"
+        self.path_photos_from_camera = "../../data/data_faces_from_camera/"
         self.current_face_dir = ""
         self.font = cv2.FONT_ITALIC
 
@@ -153,9 +153,9 @@ class Face_Register:
 
     # Start from person_x+1
     def check_existing_faces_cnt(self):
-        if os.listdir("data/data_faces_from_camera/"):
+        if os.listdir("../../data/data_faces_from_camera/"):
             # Get the order of latest person
-            person_list = os.listdir("data/data_faces_from_camera/")
+            person_list = os.listdir("../../data/data_faces_from_camera/")
             person_num_list = []
             for person in person_list:
                 person_order = person.split('_')[1].split('_')[0]
