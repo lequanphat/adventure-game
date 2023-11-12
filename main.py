@@ -38,6 +38,7 @@ from assets.assets import coin_group
 from assets.assets import coin_fx
 # import font
 from assets.assets import font
+from assets.assets import font_main
 from assets.assets import font_score
 
 
@@ -83,6 +84,7 @@ up_action = False
 left_action = False
 right_action = False
 reset_up_action = False
+mode="EASY"
 
 my_background = background[0]
 # init screen
@@ -102,9 +104,14 @@ restart_button = Button(screen, screen_width // 2 - 50, screen_height // 2 - 100
 menu_button = Button(screen, screen_width // 2 - 50, screen_height // 2 - 20, menu_btn)
 
 
-start_button = Button(screen, screen_width // 2 - 120, 360, play_btn)
-setting_button = Button(screen, screen_width // 2 - 120 , 500, setting_btn)
-exit_button = Button(screen, screen_width // 2 - 120, 640 , exit_btn)
+start_button = Button(screen, 180, 400, play_btn)
+start_with_hand_button = Button(screen, screen_width - 360, 400, play_btn)
+
+setting_button = Button(screen, 180 , 550, setting_btn)
+register_button = Button(screen, screen_width -360 , 550, setting_btn)
+
+rank_button = Button(screen, 180, 700 , exit_btn)
+exit_button = Button(screen, screen_width - 360, 700 , exit_btn)
 
 
 #create dummy coin for showing the score
@@ -250,31 +257,31 @@ class Player():
 					if self.direction == -1:
 						self.image = self.images_left[self.index]
 				# hand event
-				if up_action == True and self.jumped == False  and self.in_air == False:
-					jump_fx.play()
-					self.vel_y = -15
-					self.jumped = True
+				if mode == "HARD":
+					if up_action == True and self.jumped == False  and self.in_air == False:
+						jump_fx.play()
+						self.vel_y = -15
+						self.jumped = True
+					if up_action == False:
+						self.jumped = False
 
-				if up_action == False:
-					self.jumped = False
+					if left_action == True:
+						dx -= 5
+						self.counter += 1
+						self.direction = -1
 
-				if left_action == True:
-					dx -= 5
-					self.counter += 1
-					self.direction = -1
+					if right_action == True:
+						dx += 5
+						self.counter += 1
+						self.direction = 1
 
-				if right_action == True:
-					dx += 5
-					self.counter += 1
-					self.direction = 1
-
-				if left_action == False and right_action == False:
-					self.counter = 0
-					self.index = 0
-					if self.direction == 1:
-						self.image = self.images_right[self.index]
-					if self.direction == -1:
-						self.image = self.images_left[self.index]
+					if left_action == False and right_action == False:
+						self.counter = 0
+						self.index = 0
+						if self.direction == 1:
+							self.image = self.images_right[self.index]
+						if self.direction == -1:
+							self.image = self.images_left[self.index]
 
 
 			#handle animation
@@ -402,59 +409,62 @@ with mp_hands.Hands(
 	
 	while run:
 
-		success, image = cap.read()
-		if not success:
-			print("Ignoring empty camera frame.")
-			continue
-			
-		image.flags.writeable = False
-		image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-		results = hands.process(image)
-		image.flags.writeable = True
-		image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-		if results.multi_hand_landmarks:
-			for hand_landmarks in results.multi_hand_landmarks:
-				mp_drawing.draw_landmarks(
-					image,
-					hand_landmarks,
-					mp_hands.HAND_CONNECTIONS,
-					mp_drawing_styles.get_default_hand_landmarks_style(),
-					mp_drawing_styles.get_default_hand_connections_style())
-			
-			for hand_landmarks in results.multi_hand_landmarks:
-				handList = []
-				for landmark in hand_landmarks.landmark:
-					x = landmark.x
-					y = landmark.y
-					z = landmark.z
-					handList.append([x,y,z])
-				if (handList[6][1] - handList[8][1])*1000 > 70:
-					if reset_up_action == True:
-						up_action = True
-						reset_up_action = False
-						print('up_action: '+str(up_action))
-					else:
-						up_action = False
-					
-				if handList[8][1] > handList[6][1]:
-					reset_up_action = True
-					up_action = False
-				if (handList[18][1] - handList[20][1])*1000 > 80:
-					right_action = True
-					print('left_action: '+str(right_action))
-					
-				if (handList[4][0] - handList[2][0])*1000 > 70:
-					left_action = True
-					print('right_action: '+str(left_action))
+		if mode == "HARD":
+			success, image = cap.read()
+			if not success:
+				print("Ignoring empty camera frame.")
+				continue
+				
+			image.flags.writeable = False
+			image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+			results = hands.process(image)
+			image.flags.writeable = True
+			image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+			if results.multi_hand_landmarks:
+				for hand_landmarks in results.multi_hand_landmarks:
+					mp_drawing.draw_landmarks(
+						image,
+						hand_landmarks,
+						mp_hands.HAND_CONNECTIONS,
+						mp_drawing_styles.get_default_hand_landmarks_style(),
+						mp_drawing_styles.get_default_hand_connections_style())
+				
+				for hand_landmarks in results.multi_hand_landmarks:
+					handList = []
+					for landmark in hand_landmarks.landmark:
+						x = landmark.x
+						y = landmark.y
+						z = landmark.z
+						handList.append([x,y,z])
+					if (handList[6][1] - handList[8][1])*1000 > 70:
+						if reset_up_action == True:
+							up_action = True
+							reset_up_action = False
+							print('up_action: '+str(up_action))
+						else:
+							up_action = False
 						
-				# reset
-				if handList[20][1] > handList[18][1]:
-					right_action = False
-				if handList[2][0] > handList[4][0]:
-					left_action = False
-		cv2.imshow('Hand detector', cv2.flip(image, 1))
-		if cv2.waitKey(1) == ord('q'):
-			break
+					if handList[8][1] > handList[6][1]:
+						reset_up_action = True
+						up_action = False
+					if (handList[18][1] - handList[20][1])*1000 > 70:
+						right_action = True
+						print('left_action: '+str(right_action))
+						
+					if (handList[4][0] - handList[2][0])*1000 > 70:
+						left_action = True
+						print('right_action: '+str(left_action))
+							
+					# reset
+					if handList[20][1] > handList[18][1]:
+						right_action = False
+					if handList[2][0] > handList[4][0]:
+						left_action = False
+			cv2.imshow('Hand detector', cv2.flip(image, 1))
+			if cv2.waitKey(1) == ord('q'):
+				break
+		else:
+			cv2.destroyAllWindows()
 		# ---
 		clock.tick(fps) 
 		screen.blit(menu_background, (0, 0))
@@ -464,15 +474,25 @@ with mp_hands.Hands(
 		if main_menu == True:
 			#draw logo
 			screen.blit(logo, (screen_width // 2 - 200,20))
+			draw_text("EASY", font_main, yellow, 180, 350)
+			draw_text("HARD", font_main, yellow, screen_width - 360, 350)
 			# handle logic
 			if exit_button.draw():
 				run = False
 			if start_button.draw():
+				mode="EASY"
+				main_menu = False
+			if start_with_hand_button.draw():
+				mode="HARD"
 				main_menu = False
 			if setting_button.draw():
 				setting_menu = True
 				main_menu = False
 				tile_size = 30
+			if register_button.draw():
+				pass
+			if rank_button.draw():
+				pass
 				
 		elif setting_menu == True:
 			#draw background

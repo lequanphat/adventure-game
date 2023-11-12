@@ -4,7 +4,7 @@ pygame.init()
 
 font = pygame.font.SysFont('Bauhaus 93', 70)
 font_score = pygame.font.SysFont('Bauhaus 93', 24)
-
+font_main = pygame.font.SysFont('Bauhaus 93', 36)
 
 #load images   
 
@@ -38,9 +38,9 @@ save_btn = pygame.transform.scale(save_btn , (130,40))
 back_btn = pygame.transform.scale(back_btn , (130,40))
 load_btn = pygame.transform.scale(load_btn , (130,40))
 
-setting_btn = pygame.transform.scale(setting_btn , (240,90))
-play_btn = pygame.transform.scale(play_btn , (240,90))
-exit_btn = pygame.transform.scale(exit_btn , (240,90))
+setting_btn = pygame.transform.scale(setting_btn , (180,70))
+play_btn = pygame.transform.scale(play_btn , (180,70))
+exit_btn = pygame.transform.scale(exit_btn , (180,70))
 
 logo = pygame.transform.scale(logo , (400,300))
 #load sounds
