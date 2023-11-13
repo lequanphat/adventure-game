@@ -25,3 +25,5 @@ class Button():
 		self.screen.blit(self.image, self.rect)
 
 		return action
+	def is_clicked(self, mouse_pos):
+         return self.rect.collidepoint(mouse_pos)

@@ -45,8 +45,8 @@ exit_btn = pygame.transform.scale(exit_btn , (180,70))
 logo = pygame.transform.scale(logo , (400,300))
 #load sounds
 
-pygame.mixer.music.load('./resources/audio/music.wav')
-pygame.mixer.music.play(-1, 0.0, 5000)
+# pygame.mixer.music.load('./resources/audio/music.wav')
+# pygame.mixer.music.play(-1, 0.0, 5000)
 coin_fx = pygame.mixer.Sound('./resources/audio/coin.wav')
 coin_fx.set_volume(0.5)
 jump_fx = pygame.mixer.Sound('./resources/audio/jump.wav')
