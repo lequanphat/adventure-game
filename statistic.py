@@ -22,5 +22,3 @@ def statistic():
         return render_template('index.html', no_data=True)
     
     return render_template('index.html', statistic_data=statistic_data)
-
-

@@ -24,23 +24,42 @@ menu_background = pygame.transform.scale(menu_background , (800,800))
 
 
 
-play_btn = pygame.image.load('./resources/img/play_btn.png')
-exit_btn = pygame.image.load('./resources/img/exit_btn.png')
-setting_btn = pygame.image.load('./resources/img/setting_btn.png')
 back_btn = pygame.image.load('./resources/img/back_btn.png')
 save_btn = pygame.image.load('./resources/img/save_btn.png')
 load_btn = pygame.image.load('./resources/img/load_btn.png')
 restart_btn = pygame.image.load('./resources/img/restart_btn.png')
 menu_btn = pygame.image.load('./resources/img/menu_btn.png')
 
+#button
+playnow_btn =  pygame.image.load('./resources/img/button/playnow.png')
+register_btn =  pygame.image.load('./resources/img/button/register.png')
+exit_btn =  pygame.image.load('./resources/img/button/exit.png')
+ranking_btn =  pygame.image.load('./resources/img/button/ranking.png')
+easy_btn = pygame.image.load('./resources/img/button/easy.png')
+hard_btn = pygame.image.load('./resources/img/button/hard.png')
+setting_btn = pygame.image.load('./resources/img/button/setting.png')
+back_from_main_btn = pygame.image.load('./resources/img/button/back.png')
+
+#scale button
+
+playnow_btn = pygame.transform.scale(playnow_btn , (180,60))
+register_btn = pygame.transform.scale(register_btn , (180,60))
+exit_btn = pygame.transform.scale(exit_btn , (180,60))
+ranking_btn = pygame.transform.scale(ranking_btn , (180,60))
+easy_btn = pygame.transform.scale(easy_btn , (180,60))
+hard_btn = pygame.transform.scale(hard_btn , (180,60))
+setting_btn = pygame.transform.scale(setting_btn , (180,60))
+back_from_main_btn = pygame.transform.scale(back_from_main_btn , (180,60))
+
+
 
 save_btn = pygame.transform.scale(save_btn , (130,40))
 back_btn = pygame.transform.scale(back_btn , (130,40))
 load_btn = pygame.transform.scale(load_btn , (130,40))
 
-setting_btn = pygame.transform.scale(setting_btn , (180,70))
-play_btn = pygame.transform.scale(play_btn , (180,70))
-exit_btn = pygame.transform.scale(exit_btn , (180,70))
+
+
+
 
 logo = pygame.transform.scale(logo , (400,300))
 #load sounds

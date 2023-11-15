@@ -31,14 +31,22 @@ from env.constants import green
 from assets.assets import background
 from assets.assets import setting_background
 from assets.assets import menu_background
-from assets.assets import play_btn
-from assets.assets import exit_btn
-from assets.assets import setting_btn
+
+
 from assets.assets import back_btn
 from assets.assets import save_btn
 from assets.assets import load_btn
 from assets.assets import restart_btn
 from assets.assets import menu_btn
+from assets.assets import playnow_btn
+from assets.assets import register_btn
+from assets.assets import exit_btn
+from assets.assets import ranking_btn
+from assets.assets import easy_btn
+from assets.assets import hard_btn
+from assets.assets import setting_btn
+from assets.assets import back_from_main_btn
+
 from assets.assets import logo
 
 from assets.assets import blob_group
@@ -87,8 +95,9 @@ pygame.init()
 clock = pygame.time.Clock()
 run = True
 game_over = 0
-main_menu = True
+main_menu = False
 setting_menu = False
+login_screen = True
 level = 1
 score = 0
 pedding=False
@@ -96,15 +105,17 @@ up_action = False
 left_action = False
 right_action = False
 reset_up_action = False
-is_register = False
+accept_save_database = True
+
 mode="EASY"
 player_name = ""
-can_play_game = True
-is_statistic = False
+
 my_background = background[0]
 # init screen
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Platformer')
+
+
 
 
 
@@ -119,16 +130,19 @@ restart_button = Button(screen, screen_width // 2 - 50, screen_height // 2 - 100
 menu_button = Button(screen, screen_width // 2 - 50, screen_height // 2 - 20, menu_btn)
 
 
-start_button = Button(screen, 180, 400, play_btn)
-start_with_hand_button = Button(screen, screen_width - 360, 400, play_btn)
 
-setting_button = Button(screen, 180 , 550, setting_btn)
-register_button = Button(screen, screen_width -360 , 550, setting_btn)
-
-rank_button = Button(screen, 180, 700 , exit_btn)
-exit_button = Button(screen, screen_width - 360, 700 , exit_btn)
+playnow_button = Button(screen, screen_width // 2 - 90, 450 , playnow_btn)
+register_button = Button(screen, screen_width // 2 - 90 , 560, register_btn)
+exit_button = Button(screen, screen_width // 2 - 90 , 670, exit_btn)
 
 
+
+easy_button = Button(screen, 180 , 400, easy_btn)
+hard_button = Button(screen, screen_width - 360 , 400, hard_btn)
+setting_button = Button(screen, 180 , 500, setting_btn)
+ranking_button = Button(screen, screen_width - 360, 500, ranking_btn)
+exit_from_main_button = Button(screen, 180, 700 , exit_btn)
+back_from_main_button = Button(screen, screen_width - 360, 700 , back_from_main_btn)
 #create dummy coin for showing the score
 score_coin = Coin(tile_size // 2, tile_size // 2)
 coin_group.add(score_coin)
@@ -150,7 +164,7 @@ cursor = conn.cursor()
 # Create a table for the current date
 
 table_name = "statistic" 
-create_table_sql = f"CREATE TABLE IF NOT EXISTS {table_name} (player_name TEXT, score TEXT, level TEXT, mode TEXT, UNIQUE(player_name))"
+create_table_sql = f"CREATE TABLE IF NOT EXISTS {table_name} (id INTEGER PRIMARY KEY AUTOINCREMENT, player_name TEXT, score TEXT, level TEXT, mode TEXT)"
 cursor.execute(create_table_sql)
 
 
@@ -178,13 +192,13 @@ def reset_level(player,  level):
 	score_coin = Coin(tile_size // 2, tile_size // 2)
 	coin_group.add(score_coin)
 	return world
+
 def draw_grid():
 	for c in range(21):
 		#vertical lines
 		pygame.draw.line(screen, white, (c * tile_size, 0), (c * tile_size, screen_height - margin))
 		#horizontal lines
 		pygame.draw.line(screen, white, (0, c * tile_size ), (screen_width-margin, c * tile_size ))
-
 
 def draw_world():
 	
@@ -223,7 +237,6 @@ def draw_world():
 					#exit
 					img = pygame.transform.scale(exit_img2, (tile_size, int(tile_size * 1.5)))
 					screen.blit(img, (col * tile_size , row * tile_size - (tile_size // 2) ))
-
 
 #load in level data and create world
 def generate_new_world():
@@ -272,32 +285,30 @@ class Player():
 			key = pygame.key.get_pressed()
 			if pedding == False:
 				# key event
-				if key[pygame.K_SPACE] and self.jumped == False  and self.in_air == False:
-					jump_fx.play()
-					self.vel_y = -15
-					self.jumped = True
-				if key[pygame.K_SPACE] == False:
-					self.jumped = False
-
-				if key[pygame.K_LEFT]:
-					dx -= 5
-					self.counter += 1
-					self.direction = -1
-
-				if key[pygame.K_RIGHT]:
-					dx += 5
-					self.counter += 1
-					self.direction = 1
-
-				if key[pygame.K_LEFT] == False and key[pygame.K_RIGHT] == False:
-					self.counter = 0
-					self.index = 0
-					if self.direction == 1:
-						self.image = self.images_right[self.index]
-					if self.direction == -1:
-						self.image = self.images_left[self.index]
+				if mode== "EASY":
+					if key[pygame.K_SPACE] and self.jumped == False  and self.in_air == False:
+						jump_fx.play()
+						self.vel_y = -15
+						self.jumped = True
+					if key[pygame.K_SPACE] == False:
+						self.jumped = False
+					if key[pygame.K_LEFT]:
+						dx -= 5
+						self.counter += 1
+						self.direction = -1
+					if key[pygame.K_RIGHT]:
+						dx += 5
+						self.counter += 1
+						self.direction = 1
+					if key[pygame.K_LEFT] == False and key[pygame.K_RIGHT] == False:
+						self.counter = 0
+						self.index = 0
+						if self.direction == 1:
+							self.image = self.images_right[self.index]
+						if self.direction == -1:
+							self.image = self.images_left[self.index]
 				# hand event
-				if mode == "HARD":
+				elif mode == "HARD":
 					if up_action == True and self.jumped == False  and self.in_air == False:
 						jump_fx.play()
 						self.vel_y = -15
@@ -552,20 +563,27 @@ class Face_Recognizer:
 
     # insert data in database
 
-    def statistic(self, name,score,level,mode):
-        conn = sqlite3.connect("statistic.db")
-        cursor = conn.cursor()
-        # Check if the name already has an entry for the current date
-        cursor.execute("SELECT * FROM statistic WHERE player_name = ? ", (name))
-        existing_entry = cursor.fetchone()
-        if existing_entry:
-            pass
-        else:
-            current_time = datetime.datetime.now().strftime('%H:%M:%S')
-            cursor.execute("INSERT INTO statistic (player_name, score, level, mode) VALUES (?, ?, ?,?)", (name, score,level,mode))
-            conn.commit()
+    
 
-        conn.close()
+
+def save_statistic(name, score, level, mode):
+	conn = sqlite3.connect("statistic.db")
+	cursor = conn.cursor()
+	cursor.execute("INSERT INTO statistic (player_name, score, level, mode) VALUES (?, ?, ?,?)", (name, score, level,mode))
+	conn.commit()
+	conn.close()
+
+def get_statistic():
+	conn = sqlite3.connect("statistic.db")
+	cursor = conn.cursor()
+	cursor.execute("SELECT * FROM statistic")
+	rows = cursor.fetchall()
+	print(len(rows))
+	for row in rows:
+		print(row)  # Hiển thị thông tin của từng hàng
+	conn.close()
+
+get_statistic()
 world_data = load_world_data()
 world = World(screen, world_data, blob_group, platform_group, lava_group, coin_group, exit_group)
 player = Player(screen, 100, screen_height - 130)
@@ -579,6 +597,7 @@ with mp_hands.Hands(
     min_tracking_confidence=0.5) as hands:
 	
 	while run:	
+		# hand detector
 		if mode == "HARD":
 			success, image = cap.read()
 			if not success:
@@ -640,9 +659,9 @@ with mp_hands.Hands(
 		screen.blit(menu_background, (0, 0))
 		
 		# screen.blit(sun_img, (100, 100))
-		if main_menu == True:
-			if face_recognizer.get_face_database():
-				while cap.isOpened():
+		if login_screen == True:
+			if player_name == "":
+				if face_recognizer.get_face_database():
 					face_recognizer.frame_cnt += 1
 					logging.debug("Frame " + str(face_recognizer.frame_cnt) + " starts")
 					flag, img_rd = cap.read()
@@ -655,137 +674,108 @@ with mp_hands.Hands(
 					face_recognizer.last_frame_face_centroid_list = face_recognizer.current_frame_face_centroid_list
 					face_recognizer.current_frame_face_centroid_list = []
 
-					if (face_recognizer.current_frame_face_cnt == face_recognizer.last_frame_face_cnt) and (
-							face_recognizer.reclassify_interval_cnt != face_recognizer.reclassify_interval):
-						logging.debug("scene 1:   No face cnt changes in this frame!!!")
+					logging.debug("scene 2: / Faces cnt changes in this frame")
+					face_recognizer.current_frame_face_position_list = []
+					face_recognizer.current_frame_face_X_e_distance_list = []
+					face_recognizer.current_frame_face_feature_list = []
+					face_recognizer.reclassify_interval_cnt = 0
 
-						face_recognizer.current_frame_face_position_list = []
-
-						if "unknown" in face_recognizer.current_frame_face_name_list:
-							face_recognizer.reclassify_interval_cnt += 1
-
-						if face_recognizer.current_frame_face_cnt != 0:
-							for k, d in enumerate(faces):
-								face_recognizer.current_frame_face_position_list.append(tuple(
-									[faces[k].left(), int(faces[k].bottom() + (faces[k].bottom() - faces[k].top()) / 4)]))
-								face_recognizer.current_frame_face_centroid_list.append(
-									[int(faces[k].left() + faces[k].right()) / 2,
-									int(faces[k].top() + faces[k].bottom()) / 2])
-
-								img_rd = cv2.rectangle(img_rd,
-													tuple([d.left(), d.top()]),
-													tuple([d.right(), d.bottom()]),
-													(255, 255, 255), 2)
-						if face_recognizer.current_frame_face_cnt != 1:
-							can_play_game = False
-							face_recognizer.centroid_tracker()
-						else:
-							can_play_game = True
-						for i in range(face_recognizer.current_frame_face_cnt):
-							img_rd = cv2.putText(img_rd, face_recognizer.current_frame_face_name_list[i],
-												face_recognizer.current_frame_face_position_list[i], face_recognizer.font, 0.8, (0, 255, 255), 1,
-												cv2.LINE_AA)
-						face_recognizer.draw_note(img_rd)
+					if face_recognizer.current_frame_face_cnt == 0:
+						logging.debug("  / No faces in this frame!!!")
+						face_recognizer.current_frame_face_name_list = []
 					else:
-						logging.debug("scene 2: / Faces cnt changes in this frame")
-						face_recognizer.current_frame_face_position_list = []
-						face_recognizer.current_frame_face_X_e_distance_list = []
-						face_recognizer.current_frame_face_feature_list = []
-						face_recognizer.reclassify_interval_cnt = 0
+						logging.debug("  scene 2.2  Get faces in this frame and do face recognition")
+						face_recognizer.current_frame_face_name_list = []
+						for i in range(len(faces)):
+							shape = predictor(img_rd, faces[i])
+							face_recognizer.current_frame_face_feature_list.append(
+								face_reco_model.compute_face_descriptor(img_rd, shape))
+							face_recognizer.current_frame_face_name_list.append("unknown")
+							player_name = "unknown"
 
-						if face_recognizer.current_frame_face_cnt == 0:
-							logging.debug("  / No faces in this frame!!!")
-							face_recognizer.current_frame_face_name_list = []
-						else:
-							logging.debug("  scene 2.2  Get faces in this frame and do face recognition")
-							face_recognizer.current_frame_face_name_list = []
-							for i in range(len(faces)):
-								shape = predictor(img_rd, faces[i])
-								face_recognizer.current_frame_face_feature_list.append(
-									face_reco_model.compute_face_descriptor(img_rd, shape))
-								face_recognizer.current_frame_face_name_list.append("unknown")
-								player_name = "unknown"
+						for k in range(len(faces)):
+							logging.debug("  For face %d in current frame:", k + 1)
+							face_recognizer.current_frame_face_centroid_list.append(
+								[int(faces[k].left() + faces[k].right()) / 2,
+								int(faces[k].top() + faces[k].bottom()) / 2])
 
+							face_recognizer.current_frame_face_X_e_distance_list = []
 
-							for k in range(len(faces)):
-								logging.debug("  For face %d in current frame:", k + 1)
-								face_recognizer.current_frame_face_centroid_list.append(
-									[int(faces[k].left() + faces[k].right()) / 2,
-									int(faces[k].top() + faces[k].bottom()) / 2])
+							face_recognizer.current_frame_face_position_list.append(tuple(
+								[faces[k].left(), int(faces[k].bottom() + (faces[k].bottom() - faces[k].top()) / 4)]))
 
-								face_recognizer.current_frame_face_X_e_distance_list = []
-
-								face_recognizer.current_frame_face_position_list.append(tuple(
-									[faces[k].left(), int(faces[k].bottom() + (faces[k].bottom() - faces[k].top()) / 4)]))
-
-								for i in range(len(face_recognizer.face_features_known_list)):
-									if str(face_recognizer.face_features_known_list[i][0]) != '0.0':
-										e_distance_tmp = face_recognizer.return_euclidean_distance(
-											face_recognizer.current_frame_face_feature_list[k],
-											face_recognizer.face_features_known_list[i])
-										logging.debug("      with person %d, the e-distance: %f", i + 1, e_distance_tmp)
-										face_recognizer.current_frame_face_X_e_distance_list.append(e_distance_tmp)
-										
-									else:
-										face_recognizer.current_frame_face_X_e_distance_list.append(999999999)
-
-								similar_person_num = face_recognizer.current_frame_face_X_e_distance_list.index(
-									min(face_recognizer.current_frame_face_X_e_distance_list))
-
-								if min(face_recognizer.current_frame_face_X_e_distance_list) < 0.4:
-									face_recognizer.current_frame_face_name_list[k] = face_recognizer.face_name_known_list[similar_person_num]
-									logging.debug("  Face recognition result: %s",
-												face_recognizer.face_name_known_list[similar_person_num])
-									player_name = face_recognizer.face_name_known_list[similar_person_num]
+							for i in range(len(face_recognizer.face_features_known_list)):
+								if str(face_recognizer.face_features_known_list[i][0]) != '0.0':
+									e_distance_tmp = face_recognizer.return_euclidean_distance(
+										face_recognizer.current_frame_face_feature_list[k],
+										face_recognizer.face_features_known_list[i])
+									logging.debug("      with person %d, the e-distance: %f", i + 1, e_distance_tmp)
+									face_recognizer.current_frame_face_X_e_distance_list.append(e_distance_tmp)
+									
 								else:
-									logging.debug("  Face recognition result: Unknown person")
+									face_recognizer.current_frame_face_X_e_distance_list.append(999999999)
 
-							# 7.  / Add note on cv2 window
-							face_recognizer.draw_note(img_rd)
-					screen.blit(logo, (screen_width // 2 - 200,20))
-					draw_text("EASY", font_main, yellow, 180, 350)
-					draw_text("HARD", font_main, yellow, screen_width - 360, 350)
-					# handle logic
-					if exit_button.draw():
-						run = False
-						break
-					if start_button.draw():
-						if(can_play_game == True and player_name != "unknown"):
-							mode="EASY"
-							main_menu = False
-							break
-					if start_with_hand_button.draw():
-						if(can_play_game == True and player_name != "unknown"):
-							mode="HARD"
-							main_menu = False
-							break
-					if setting_button.draw():
-						setting_menu = True
-						main_menu = False
-						tile_size = 30
-						break
-					if register_button.draw():
-						is_register = True
-						main_menu = False
-						break
-					if rank_button.draw():
-						main_menu = False
-						is_statistic = True
-					for event in pygame.event.get():
-						if event.type == pygame.QUIT:
-							run = False
-					pygame.display.update()
-					face_recognizer.update_fps()
-					cv2.namedWindow("camera", 1)
-					cv2.imshow("camera", img_rd)
-		elif is_statistic == True:
-			statistic.app.run(debug=True)
-			main_menu = True
-			is_statistic = False
-		elif is_register == True:
-			register.main()
-			is_register=False
-			main_menu=True
+							similar_person_num = face_recognizer.current_frame_face_X_e_distance_list.index(
+								min(face_recognizer.current_frame_face_X_e_distance_list))
+
+							if min(face_recognizer.current_frame_face_X_e_distance_list) < 0.4:
+								face_recognizer.current_frame_face_name_list[k] = face_recognizer.face_name_known_list[similar_person_num]
+								logging.debug("  Face recognition result: %s",
+											face_recognizer.face_name_known_list[similar_person_num])
+								player_name = face_recognizer.face_name_known_list[similar_person_num]
+							else:
+								logging.debug("  Face recognition result: Unknown person")
+
+				cv2.namedWindow("camera", 1)
+				cv2.imshow("camera", img_rd)
+
+			
+			screen.blit(logo, (screen_width // 2 - 200,20))
+			draw_text("User: "+player_name, font_main, (44, 62, 80), 280, 340)
+			if register_button.draw():
+				register.main()
+			if playnow_button.draw():
+				main_menu = True
+				login_screen = False
+			
+			if exit_button.draw():
+				run = False
+				break
+				
+		elif main_menu == True:
+			screen.blit(logo, (screen_width // 2 - 200,20))
+			# handle logic
+			if exit_from_main_button.draw():
+				run = False
+				break
+			if easy_button.draw():
+				mode="EASY"
+				main_menu = False
+					
+			if hard_button.draw():
+				mode="HARD"
+				main_menu = False
+					
+			if setting_button.draw():
+				setting_menu = True
+				main_menu = False
+				tile_size = 30
+				
+			if back_from_main_button.draw():
+				main_menu = False
+				
+			if ranking_button.draw():
+				statistic.app.run(debug=True)
+				print('statistic')
+			for event in pygame.event.get():
+				if event.type == pygame.QUIT:
+					run = False
+			pygame.display.update()
+			
+					
+		
+			
+		
 		elif setting_menu == True:
 			#draw background
 			screen.fill(green)
@@ -892,33 +882,36 @@ with mp_hands.Hands(
 					pedding=False
 
 			#if player has died
-
 			if game_over == -1:
-				face_recognizer.statistic(player_name, level,score, mode)
+				if accept_save_database == True:
+					save_statistic(player_name, level, score, mode)
+					accept_save_database = False
 				if restart_button.draw():
 					world_data = []
 					world = reset_level(player,  level)
 					game_over = 0
 					score = 0
+					accept_save_database = True
 				if menu_button.draw():
 					world_data = load_world_data()
 					world = reset_level(player,  level)
 					game_over = 0
 					score = 0
 					main_menu = True
+					accept_save_database = True
 
 			#if player has completed the level
 			if game_over == 1:
-				face_recognizer.statistic(player_name, level,score, mode)
 				level += 1
 				if load_world_data() != None:
 					my_background = load_background()
 					world_data = []
 					world = reset_level(player, level)
 					game_over = 0
-
 				else:
-					face_recognizer.statistic(player_name, level,score, mode)
+					if accept_save_database == True:
+						save_statistic(player_name, level, score, mode)
+						accept_save_database = False
 					draw_text('YOU WIN!', font, yellow, (screen_width // 2) - 140, screen_height // 2 - 215)
 					if restart_button.draw():
 						level = 1
@@ -927,6 +920,7 @@ with mp_hands.Hands(
 						world = reset_level(player, level)
 						game_over = 0
 						score = 0
+						accept_save_database = True
 					if menu_button.draw():
 						level = 1
 						#reset level
@@ -935,6 +929,7 @@ with mp_hands.Hands(
 						main_menu = True
 						game_over = 0
 						score = 0
+						accept_save_database = True
 
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
