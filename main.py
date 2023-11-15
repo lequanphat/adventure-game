@@ -15,6 +15,9 @@ from os import path
 import pickle
 import random
 from pygame import mixer
+
+from config.database import database
+
 from assets.assets import game_over_fx
 from assets.assets import jump_fx
 # from env
@@ -109,8 +112,14 @@ accept_save_database = True
 
 mode="EASY"
 player_name = ""
-
 my_background = background[0]
+
+db = database()
+
+
+db.get_statistic()
+
+
 # init screen
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Platformer')
@@ -157,20 +166,6 @@ predictor = dlib.shape_predictor('data/data_dlib/shape_predictor_68_face_landmar
 # Dlib Resnet Use Dlib resnet50 model to get 128D face descriptor
 face_reco_model = dlib.face_recognition_model_v1("data/data_dlib/dlib_face_recognition_resnet_model_v1.dat")
 
-# Create a connection to the database
-conn = sqlite3.connect("statistic.db")
-cursor = conn.cursor()
-
-# Create a table for the current date
-
-table_name = "statistic" 
-create_table_sql = f"CREATE TABLE IF NOT EXISTS {table_name} (id INTEGER PRIMARY KEY AUTOINCREMENT, player_name TEXT, score TEXT, level TEXT, mode TEXT)"
-cursor.execute(create_table_sql)
-
-
-# Commit changes and close the connection
-conn.commit()
-conn.close()
 
 def draw_text(text, font, text_col, x, y):
 	img = font.render(text, True, text_col)
@@ -566,24 +561,7 @@ class Face_Recognizer:
     
 
 
-def save_statistic(name, score, level, mode):
-	conn = sqlite3.connect("statistic.db")
-	cursor = conn.cursor()
-	cursor.execute("INSERT INTO statistic (player_name, score, level, mode) VALUES (?, ?, ?,?)", (name, score, level,mode))
-	conn.commit()
-	conn.close()
 
-def get_statistic():
-	conn = sqlite3.connect("statistic.db")
-	cursor = conn.cursor()
-	cursor.execute("SELECT * FROM statistic")
-	rows = cursor.fetchall()
-	print(len(rows))
-	for row in rows:
-		print(row)  # Hiển thị thông tin của từng hàng
-	conn.close()
-
-get_statistic()
 world_data = load_world_data()
 world = World(screen, world_data, blob_group, platform_group, lava_group, coin_group, exit_group)
 player = Player(screen, 100, screen_height - 130)
@@ -884,7 +862,7 @@ with mp_hands.Hands(
 			#if player has died
 			if game_over == -1:
 				if accept_save_database == True:
-					save_statistic(player_name, level, score, mode)
+					db.save_statistic(player_name, level, score, mode)
 					accept_save_database = False
 				if restart_button.draw():
 					world_data = []
@@ -910,7 +888,7 @@ with mp_hands.Hands(
 					game_over = 0
 				else:
 					if accept_save_database == True:
-						save_statistic(player_name, level, score, mode)
+						db.save_statistic(player_name, level, score, mode)
 						accept_save_database = False
 					draw_text('YOU WIN!', font, yellow, (screen_width // 2) - 140, screen_height // 2 - 215)
 					if restart_button.draw():
