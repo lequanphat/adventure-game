@@ -1,7 +1,11 @@
-# Adventure Game - Dự án Game Platform kết hợp nhận dạng xử lý ảnh OpenCV
+# Adventure Game
+## Dự án Game Platform kết hợp nhận dạng xử lý ảnh với OpenCV
 1. Xây dựng Game Platform.
-2. Xây dựng chức năng điều khiển game bằng cử động bàn tay.
+2. Điều khiển game bằng bàn phím (EASY MODE).
+2. Điều khiển game bằng nhận dạng cử động bàn tay (HARD MODE).
 3. Đăng ký, đăng nhập bằng nhận diện khuôn mặt.
+4. Xây dựng cơ chế tự thiết kế màn chơi cho người chơi.
+5. Xây dựng chức năng history và ranking.
 ## Cài đặt
 
 1. Cài đặt Anaconda https://www.anaconda.com/
@@ -9,7 +13,21 @@
 ```console
 $ git clone https://github.com/lequanphat/Adventure-Game.git
 ```
-3. 
-
-
-
+3. Chạy dự án với Anaconda
+Tạo môi trường python 3.8
+```console
+$ conda create --name myenv python=3.8
+```
+Kích hoạt môi trường
+```console
+$ conda activate myenv
+```
+Cài đặt các gói cần thiết
+```console
+$ conda install pygame
+$ conda install opencv-python
+$ conda install mediapipe
+$ conda install numpy
+$ conda install pandas
+$ conda install cmake
+```
