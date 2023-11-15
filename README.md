@@ -13,16 +13,17 @@
 ```console
 $ git clone https://github.com/lequanphat/Adventure-Game.git
 ```
-3. Chạy dự án với Anaconda
-Tạo môi trường python 3.8
+
+
+3. Tạo môi trường python 3.8
 ```console
 $ conda create --name myenv python=3.8
 ```
-Kích hoạt môi trường
+4. Kích hoạt môi trường
 ```console
 $ conda activate myenv
 ```
-Cài đặt các gói cần thiết
+5. Cài đặt các gói cần thiết
 ```console
 $ conda install pygame
 $ conda install opencv-python
@@ -30,4 +31,8 @@ $ conda install mediapipe
 $ conda install numpy
 $ conda install pandas
 $ conda install cmake
+```
+6. Run
+```console
+$ python main.py
 ```
