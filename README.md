@@ -28,11 +28,23 @@ $ conda activate myenv
 $ conda install pygame
 $ conda install opencv-python
 $ conda install mediapipe
-$ conda install numpy
-$ conda install pandas
-$ conda install cmake
 ```
 6. Run
 ```console
 $ python main.py
 ```
+
+## Hướng dẫn khắc phục lỗi cài đặt dlib
+Python 3.7
+```console
+$ conda install library/dlib-19.22.99-cp37-cp37m-win_amd64.whl
+```
+Python 3.8
+```console
+$ conda install library/dlib-19.22.99-cp38-cp38-win_amd64.whl
+```
+Python 3.9
+```console
+$ conda install library/dlib-19.22.99-cp39-cp39-win_amd64.whl
+```
+## Demo
