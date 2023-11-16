@@ -1,38 +1,37 @@
-import sqlite3
+from fastapi import FastAPI
+from dotenv import dotenv_values
+from pymongo import MongoClient
 class database():
     def __init__(self):
-        conn = sqlite3.connect("statistic.db")
-        cursor = conn.cursor()
-        table_name = "statistic" 
-        create_table_sql = f"CREATE TABLE IF NOT EXISTS {table_name} (id INTEGER PRIMARY KEY AUTOINCREMENT, player_name TEXT, score INTEGER, level INTEGER, mode TEXT)"
-        cursor.execute(create_table_sql)
-        conn.commit()
-        conn.close()
-    
-    def save_statistic(self, name, score, level, mode):
-        conn = sqlite3.connect("statistic.db")
-        cursor = conn.cursor()
-        cursor.execute("INSERT INTO statistic (player_name, score, level, mode) VALUES (?, ?, ?,?)", (name, score, level,mode))
-        conn.commit()
-        conn.close()
-
+        self.myClient = MongoClient("mongodb+srv://quocvi1701:MysV_1701@cluster0.9sp9zvq.mongodb.net/?retryWrites=true&w=majority")
+        self.mydb= self.myClient["adventure-game"]
+        self.collection_name = self.mydb["statistic"]
+        self.is_insert = True
     def get_statistic(self):
-        conn = sqlite3.connect("statistic.db")
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM statistic")
-        rows = cursor.fetchall()
-        print(len(rows))
-        for row in rows:
-            print(row)  # Hiển thị thông tin của từng hàng
-        conn.close()
-        return rows
-
-    def get_ranking(self, mode):
-        conn = sqlite3.connect("statistic.db")
-        cursor = conn.cursor()
+        item_details = self.collection_name.find()
+        return item_details
         
-        cursor.execute("SELECT * FROM statistic WHERE mode=? ORDER BY score DESC", (mode, ))
-        rows = cursor.fetchall()
-        print(len(rows))
-        conn.close()
-        return rows
+    def save_statistic(self,name, score, level, mode):
+        item_details = self.get_statistic()
+        for item in item_details:
+            if item["player_name"] == name and item["mode"] == mode:
+                self.is_insert = False
+                if int(item["score"]) < score:
+                    print("check")
+                    self.collection_name.update_one({"_id": item["_id"]}, {"$set" : {"score" : score}}) 
+                if int(item["level"]) < level:
+                    self.collection_name.update_one({"_id": item["_id"]}, {"$set" : {"level" : level}}) 
+        if self.is_insert == True:         
+            self.collection_name.insert_one({
+            "player_name":name,
+            "score":score,
+            "level":level,
+            "mode":mode
+            })
+    def get_ranking(self, mode):
+        pipeline = [
+            {"$match": {"mode": mode}},
+            {"$sort": {"score": -1}},
+        ]
+        ranking = self.collection_name.aggregate(pipeline)
+        return list(ranking)

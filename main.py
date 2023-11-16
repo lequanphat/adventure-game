@@ -844,17 +844,17 @@ with mp_hands.Hands(
 			draw_text("ID", font_ranking, wet_asphalt , 470, 160)
 			draw_text("Player", font_ranking, wet_asphalt , 530, 160)
 			draw_text("Score", font_ranking, wet_asphalt , 730, 160)
-
-			if data_easy_ranking != None:
+			print(data_easy_ranking, data_hard_ranking)
+			if data_easy_ranking is not None:
 				for i in range(0,size_of_easy_ranking):
 					draw_text(str(i+1), font_ranking, wet_asphalt , 40, 200 + 40*i)
-					draw_text(data_easy_ranking[i][1], font_ranking, wet_asphalt , 100, 200 + 40*i)
-					draw_text(str(data_easy_ranking[i][2]), font_ranking, wet_asphalt , 300, 200 + 40*i)
-			if data_hard_ranking != None:
+					draw_text(data_easy_ranking[i]["player_name"], font_ranking, wet_asphalt , 100, 200 + 40*i)
+					draw_text(str(data_easy_ranking[i]["score"]), font_ranking, wet_asphalt , 300, 200 + 40*i)
+			if data_hard_ranking is not None:
 				for i in range(0,size_of_hard_ranking ):
 					draw_text(str(i+1), font_ranking, wet_asphalt , 470, 200 + 40*i)
-					draw_text(data_hard_ranking[i][1], font_ranking, wet_asphalt , 530, 200 + 40*i)
-					draw_text(str(data_hard_ranking[i][2]), font_ranking, wet_asphalt , 730, 200 + 40*i)
+					draw_text(data_hard_ranking[i]["player_name"], font_ranking, wet_asphalt , 530, 200 + 40*i)
+					draw_text(str(data_hard_ranking[i]["score"]), font_ranking, wet_asphalt , 730, 200 + 40*i)
 
 			if back_from_ranking_button.draw():
 				main_menu = True
