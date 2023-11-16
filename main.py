@@ -29,6 +29,7 @@ from env.constants import white
 from env.constants import blue
 from env.constants import yellow
 from env.constants import green
+from env.constants import wet_asphalt
 
 # import img
 from assets.assets import background
@@ -49,6 +50,7 @@ from assets.assets import easy_btn
 from assets.assets import hard_btn
 from assets.assets import setting_btn
 from assets.assets import back_from_main_btn
+from assets.assets import back_from_ranking_btn
 
 from assets.assets import logo
 
@@ -62,6 +64,7 @@ from assets.assets import coin_fx
 from assets.assets import font
 from assets.assets import font_main
 from assets.assets import font_score
+from assets.assets import font_ranking
 
 
 
@@ -101,6 +104,7 @@ game_over = 0
 main_menu = False
 setting_menu = False
 login_screen = True
+ranking_screen = False
 level = 1
 score = 0
 pedding=False
@@ -109,6 +113,9 @@ left_action = False
 right_action = False
 reset_up_action = False
 accept_save_database = True
+
+data_easy_ranking = None
+data_hard_ranking = None
 
 mode="EASY"
 player_name = ""
@@ -152,6 +159,7 @@ setting_button = Button(screen, 180 , 500, setting_btn)
 ranking_button = Button(screen, screen_width - 360, 500, ranking_btn)
 exit_from_main_button = Button(screen, 180, 700 , exit_btn)
 back_from_main_button = Button(screen, screen_width - 360, 700 , back_from_main_btn)
+back_from_ranking_button = Button(screen, 10, 10 , back_from_ranking_btn)
 #create dummy coin for showing the score
 score_coin = Coin(tile_size // 2, tile_size // 2)
 coin_group.add(score_coin)
@@ -558,9 +566,6 @@ class Face_Recognizer:
 
     # insert data in database
 
-    
-
-
 
 world_data = load_world_data()
 world = World(screen, world_data, blob_group, platform_group, lava_group, coin_group, exit_group)
@@ -709,7 +714,7 @@ with mp_hands.Hands(
 
 			
 			screen.blit(logo, (screen_width // 2 - 200,20))
-			draw_text("User: "+player_name, font_main, (44, 62, 80), 280, 340)
+			draw_text("Player: "+player_name, font_main, (44, 62, 80), 250, 340)
 			if register_button.draw():
 				register.main()
 			if playnow_button.draw():
@@ -729,10 +734,12 @@ with mp_hands.Hands(
 			if easy_button.draw():
 				mode="EASY"
 				main_menu = False
+				level = 1
 					
 			if hard_button.draw():
 				mode="HARD"
 				main_menu = False
+				level = 1
 					
 			if setting_button.draw():
 				setting_menu = True
@@ -743,17 +750,16 @@ with mp_hands.Hands(
 				main_menu = False
 				
 			if ranking_button.draw():
-				statistic.app.run(debug=True)
+				ranking_screen = True
+				main_menu = False
+				data_easy_ranking = db.get_ranking("EASY")
+				data_hard_ranking = db.get_ranking("HARD")
 				print('statistic')
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					run = False
 			pygame.display.update()
 			
-					
-		
-			
-		
 		elif setting_menu == True:
 			#draw background
 			screen.fill(green)
@@ -820,6 +826,40 @@ with mp_hands.Hands(
 
 
 			# end
+		elif ranking_screen == True:
+			screen.blit(background[0], (0, 0))
+			draw_text('Ranking', pygame.font.SysFont('Bauhaus 93', 55), wet_asphalt , 300, 10)
+			draw_text('EASY', font_main, wet_asphalt , 150, 80)
+			draw_text('HARD', font_main, wet_asphalt , 540, 80)
+			size_of_easy_ranking = 10
+			size_of_hard_ranking = 10
+			if len(data_easy_ranking) < size_of_easy_ranking:
+				size_of_easy_ranking = len(data_easy_ranking)
+			if len(data_hard_ranking) < size_of_hard_ranking:
+				size_of_hard_ranking = len(data_hard_ranking)
+
+			draw_text("ID", font_ranking, wet_asphalt , 40, 160)
+			draw_text("Player", font_ranking, wet_asphalt , 100, 160)
+			draw_text("Score", font_ranking, wet_asphalt , 300, 160)
+			draw_text("ID", font_ranking, wet_asphalt , 470, 160)
+			draw_text("Player", font_ranking, wet_asphalt , 530, 160)
+			draw_text("Score", font_ranking, wet_asphalt , 730, 160)
+
+			if data_easy_ranking != None:
+				for i in range(0,size_of_easy_ranking):
+					draw_text(str(i+1), font_ranking, wet_asphalt , 40, 200 + 40*i)
+					draw_text(data_easy_ranking[i][1], font_ranking, wet_asphalt , 100, 200 + 40*i)
+					draw_text(str(data_easy_ranking[i][2]), font_ranking, wet_asphalt , 300, 200 + 40*i)
+			if data_hard_ranking != None:
+				for i in range(0,size_of_hard_ranking ):
+					draw_text(str(i+1), font_ranking, wet_asphalt , 470, 200 + 40*i)
+					draw_text(data_hard_ranking[i][1], font_ranking, wet_asphalt , 530, 200 + 40*i)
+					draw_text(str(data_hard_ranking[i][2]), font_ranking, wet_asphalt , 730, 200 + 40*i)
+
+			if back_from_ranking_button.draw():
+				main_menu = True
+				ranking_screen = False
+
 		else:
 			screen.blit(my_background, (0, 0))
 			world.draw()
@@ -862,8 +902,10 @@ with mp_hands.Hands(
 			#if player has died
 			if game_over == -1:
 				if accept_save_database == True:
-					db.save_statistic(player_name, level, score, mode)
-					accept_save_database = False
+					if player_name != 'unknown':
+						db.save_statistic(player_name, score, level, mode)
+						accept_save_database = False
+
 				if restart_button.draw():
 					world_data = []
 					world = reset_level(player,  level)
@@ -888,8 +930,10 @@ with mp_hands.Hands(
 					game_over = 0
 				else:
 					if accept_save_database == True:
-						db.save_statistic(player_name, level, score, mode)
-						accept_save_database = False
+						if player_name != 'unknown':
+							db.save_statistic(player_name, score, level, mode)
+							accept_save_database = False
+
 					draw_text('YOU WIN!', font, yellow, (screen_width // 2) - 140, screen_height // 2 - 215)
 					if restart_button.draw():
 						level = 1

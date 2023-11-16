@@ -5,6 +5,7 @@ pygame.init()
 font = pygame.font.SysFont('Bauhaus 93', 70)
 font_score = pygame.font.SysFont('Bauhaus 93', 24)
 font_main = pygame.font.SysFont('Bauhaus 93', 36)
+font_ranking = pygame.font.SysFont('Bauhaus 93', 22)
 
 #load images   
 
@@ -39,6 +40,7 @@ easy_btn = pygame.image.load('./resources/img/button/easy.png')
 hard_btn = pygame.image.load('./resources/img/button/hard.png')
 setting_btn = pygame.image.load('./resources/img/button/setting.png')
 back_from_main_btn = pygame.image.load('./resources/img/button/back.png')
+back_from_ranking_btn = pygame.image.load('./resources/img/button/back_arow.png')
 
 #scale button
 
@@ -50,6 +52,7 @@ easy_btn = pygame.transform.scale(easy_btn , (180,60))
 hard_btn = pygame.transform.scale(hard_btn , (180,60))
 setting_btn = pygame.transform.scale(setting_btn , (180,60))
 back_from_main_btn = pygame.transform.scale(back_from_main_btn , (180,60))
+back_from_ranking_btn = pygame.transform.scale(back_from_ranking_btn , (120,60))
 
 
 
