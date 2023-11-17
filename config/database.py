@@ -24,9 +24,7 @@ class database():
                 self.is_insert = False
                 if int(item["score"]) < score:
                     print("check")
-                    self.collection_name.update_one({"_id": item["_id"]}, {"$set" : {"score" : score}}) 
-                if int(item["level"]) < level:
-                    self.collection_name.update_one({"_id": item["_id"]}, {"$set" : {"level" : level}}) 
+                    self.collection_name.update_one({"_id": item["_id"]}, {"$set" : {"score" : score , "level" : level}}) 
         if self.is_insert == True:         
             self.collection_name.insert_one({
             "player_name":name,

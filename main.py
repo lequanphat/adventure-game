@@ -5,10 +5,7 @@ import os
 import pandas as pd
 import time
 import logging
-import sqlite3
-import datetime
 import mediapipe as mp
-from PIL import Image, ImageTk
 import pygame
 from pygame.locals import *
 from os import path
@@ -86,7 +83,6 @@ from assets.assets import coin_img
 from assets.assets import exit_img2 
 
 import components.Face_Detected.get_faces_from_camera_tkinter as register
-import statistic
 import cv2
 import mediapipe as mp
 mp_drawing = mp.solutions.drawing_utils
@@ -122,8 +118,6 @@ player_name = ""
 my_background = background[0]
 
 db = database()
-
-
 
 
 
