@@ -153,10 +153,10 @@ exit_button = Button(screen, screen_width // 2 - 90 , 670, exit_btn)
 
 
 
-easy_button = Button(screen, 180 , 400, easy_btn)
-hard_button = Button(screen, screen_width - 360 , 400, hard_btn)
-setting_button = Button(screen, 180 , 500, setting_btn)
-ranking_button = Button(screen, screen_width - 360, 500, ranking_btn)
+easy_button = Button(screen, 180 , 500, easy_btn)
+hard_button = Button(screen, screen_width - 360 , 500, hard_btn)
+setting_button = Button(screen, 180 , 600, setting_btn)
+ranking_button = Button(screen, screen_width - 360, 600, ranking_btn)
 exit_from_main_button = Button(screen, 180, 700 , exit_btn)
 back_from_main_button = Button(screen, screen_width - 360, 700 , back_from_main_btn)
 back_from_ranking_button = Button(screen, 10, 10 , back_from_ranking_btn)
@@ -715,7 +715,8 @@ with mp_hands.Hands(
 
 			
 			screen.blit(logo, (screen_width // 2 - 200,20))
-			draw_text("Player: "+player_name, font_main, (44, 62, 80), 250, 340)
+			draw_text("Adventure", pygame.font.SysFont('Bauhaus 93', 100), (241, 196, 15), 190, 260)
+			draw_text("Player: "+player_name, font_main, (44, 62, 80), 250, 380)
 			if register_button.draw():
 				register.main()
 			if playnow_button.draw():
@@ -728,6 +729,8 @@ with mp_hands.Hands(
 				
 		elif main_menu == True:
 			screen.blit(logo, (screen_width // 2 - 200,20))
+			draw_text("Adventure", pygame.font.SysFont('Bauhaus 93', 100), (241, 196, 15), 190, 260)
+			draw_text("Player: "+player_name, font_main, (44, 62, 80), 250, 380)
 			# handle logic
 			if exit_from_main_button.draw():
 				run = False
@@ -823,6 +826,7 @@ with mp_hands.Hands(
 					elif event.key == pygame.K_DOWN and level > 1:
 						level -= 1
 			#update game display window
+			
 			pygame.display.update()
 
 
@@ -864,8 +868,9 @@ with mp_hands.Hands(
 			screen.blit(my_background, (0, 0))
 			world.draw()
 			if game_over == 0:
-				blob_group.update()
-				platform_group.update()
+				if pedding != True:
+					blob_group.update()
+					platform_group.update()
 				#update score
 				#check if a coin has been collected
 
