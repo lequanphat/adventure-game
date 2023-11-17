@@ -124,7 +124,7 @@ my_background = background[0]
 db = database()
 
 
-db.get_statistic()
+
 
 
 # init screen
@@ -644,73 +644,74 @@ with mp_hands.Hands(
 		# screen.blit(sun_img, (100, 100))
 		if login_screen == True:
 			if player_name == "":
-				if face_recognizer.get_face_database():
-					face_recognizer.frame_cnt += 1
-					logging.debug("Frame " + str(face_recognizer.frame_cnt) + " starts")
-					flag, img_rd = cap.read()
-					faces = detector(img_rd, 0)
-					face_recognizer.last_frame_face_cnt = face_recognizer.current_frame_face_cnt
-					face_recognizer.current_frame_face_cnt = len(faces)
+				player_name = "Nguyen Van A"
+				# if face_recognizer.get_face_database():
+				# 	face_recognizer.frame_cnt += 1
+				# 	logging.debug("Frame " + str(face_recognizer.frame_cnt) + " starts")
+				# 	flag, img_rd = cap.read()
+				# 	faces = detector(img_rd, 0)
+				# 	face_recognizer.last_frame_face_cnt = face_recognizer.current_frame_face_cnt
+				# 	face_recognizer.current_frame_face_cnt = len(faces)
 
-					face_recognizer.last_frame_face_name_list = face_recognizer.current_frame_face_name_list[:]
+				# 	face_recognizer.last_frame_face_name_list = face_recognizer.current_frame_face_name_list[:]
 
-					face_recognizer.last_frame_face_centroid_list = face_recognizer.current_frame_face_centroid_list
-					face_recognizer.current_frame_face_centroid_list = []
+				# 	face_recognizer.last_frame_face_centroid_list = face_recognizer.current_frame_face_centroid_list
+				# 	face_recognizer.current_frame_face_centroid_list = []
 
-					logging.debug("scene 2: / Faces cnt changes in this frame")
-					face_recognizer.current_frame_face_position_list = []
-					face_recognizer.current_frame_face_X_e_distance_list = []
-					face_recognizer.current_frame_face_feature_list = []
-					face_recognizer.reclassify_interval_cnt = 0
+				# 	logging.debug("scene 2: / Faces cnt changes in this frame")
+				# 	face_recognizer.current_frame_face_position_list = []
+				# 	face_recognizer.current_frame_face_X_e_distance_list = []
+				# 	face_recognizer.current_frame_face_feature_list = []
+				# 	face_recognizer.reclassify_interval_cnt = 0
 
-					if face_recognizer.current_frame_face_cnt == 0:
-						logging.debug("  / No faces in this frame!!!")
-						face_recognizer.current_frame_face_name_list = []
-					else:
-						logging.debug("  scene 2.2  Get faces in this frame and do face recognition")
-						face_recognizer.current_frame_face_name_list = []
-						for i in range(len(faces)):
-							shape = predictor(img_rd, faces[i])
-							face_recognizer.current_frame_face_feature_list.append(
-								face_reco_model.compute_face_descriptor(img_rd, shape))
-							face_recognizer.current_frame_face_name_list.append("unknown")
-							player_name = "unknown"
+				# 	if face_recognizer.current_frame_face_cnt == 0:
+				# 		logging.debug("  / No faces in this frame!!!")
+				# 		face_recognizer.current_frame_face_name_list = []
+				# 	else:
+				# 		logging.debug("  scene 2.2  Get faces in this frame and do face recognition")
+				# 		face_recognizer.current_frame_face_name_list = []
+				# 		for i in range(len(faces)):
+				# 			shape = predictor(img_rd, faces[i])
+				# 			face_recognizer.current_frame_face_feature_list.append(
+				# 				face_reco_model.compute_face_descriptor(img_rd, shape))
+				# 			face_recognizer.current_frame_face_name_list.append("unknown")
+				# 			player_name = "unknown"
 
-						for k in range(len(faces)):
-							logging.debug("  For face %d in current frame:", k + 1)
-							face_recognizer.current_frame_face_centroid_list.append(
-								[int(faces[k].left() + faces[k].right()) / 2,
-								int(faces[k].top() + faces[k].bottom()) / 2])
+				# 		for k in range(len(faces)):
+				# 			logging.debug("  For face %d in current frame:", k + 1)
+				# 			face_recognizer.current_frame_face_centroid_list.append(
+				# 				[int(faces[k].left() + faces[k].right()) / 2,
+				# 				int(faces[k].top() + faces[k].bottom()) / 2])
 
-							face_recognizer.current_frame_face_X_e_distance_list = []
+				# 			face_recognizer.current_frame_face_X_e_distance_list = []
 
-							face_recognizer.current_frame_face_position_list.append(tuple(
-								[faces[k].left(), int(faces[k].bottom() + (faces[k].bottom() - faces[k].top()) / 4)]))
+				# 			face_recognizer.current_frame_face_position_list.append(tuple(
+				# 				[faces[k].left(), int(faces[k].bottom() + (faces[k].bottom() - faces[k].top()) / 4)]))
 
-							for i in range(len(face_recognizer.face_features_known_list)):
-								if str(face_recognizer.face_features_known_list[i][0]) != '0.0':
-									e_distance_tmp = face_recognizer.return_euclidean_distance(
-										face_recognizer.current_frame_face_feature_list[k],
-										face_recognizer.face_features_known_list[i])
-									logging.debug("      with person %d, the e-distance: %f", i + 1, e_distance_tmp)
-									face_recognizer.current_frame_face_X_e_distance_list.append(e_distance_tmp)
+				# 			for i in range(len(face_recognizer.face_features_known_list)):
+				# 				if str(face_recognizer.face_features_known_list[i][0]) != '0.0':
+				# 					e_distance_tmp = face_recognizer.return_euclidean_distance(
+				# 						face_recognizer.current_frame_face_feature_list[k],
+				# 						face_recognizer.face_features_known_list[i])
+				# 					logging.debug("      with person %d, the e-distance: %f", i + 1, e_distance_tmp)
+				# 					face_recognizer.current_frame_face_X_e_distance_list.append(e_distance_tmp)
 									
-								else:
-									face_recognizer.current_frame_face_X_e_distance_list.append(999999999)
+				# 				else:
+				# 					face_recognizer.current_frame_face_X_e_distance_list.append(999999999)
 
-							similar_person_num = face_recognizer.current_frame_face_X_e_distance_list.index(
-								min(face_recognizer.current_frame_face_X_e_distance_list))
+				# 			similar_person_num = face_recognizer.current_frame_face_X_e_distance_list.index(
+				# 				min(face_recognizer.current_frame_face_X_e_distance_list))
 
-							if min(face_recognizer.current_frame_face_X_e_distance_list) < 0.4:
-								face_recognizer.current_frame_face_name_list[k] = face_recognizer.face_name_known_list[similar_person_num]
-								logging.debug("  Face recognition result: %s",
-											face_recognizer.face_name_known_list[similar_person_num])
-								player_name = face_recognizer.face_name_known_list[similar_person_num]
-							else:
-								logging.debug("  Face recognition result: Unknown person")
+				# 			if min(face_recognizer.current_frame_face_X_e_distance_list) < 0.4:
+				# 				face_recognizer.current_frame_face_name_list[k] = face_recognizer.face_name_known_list[similar_person_num]
+				# 				logging.debug("  Face recognition result: %s",
+				# 							face_recognizer.face_name_known_list[similar_person_num])
+				# 				player_name = face_recognizer.face_name_known_list[similar_person_num]
+				# 			else:
+				# 				logging.debug("  Face recognition result: Unknown person")
 
-				cv2.namedWindow("camera", 1)
-				cv2.imshow("camera", img_rd)
+				# cv2.namedWindow("camera", 1)
+				# cv2.imshow("camera", img_rd)
 
 			
 			screen.blit(logo, (screen_width // 2 - 200,20))
@@ -844,7 +845,6 @@ with mp_hands.Hands(
 			draw_text("ID", font_ranking, wet_asphalt , 470, 160)
 			draw_text("Player", font_ranking, wet_asphalt , 530, 160)
 			draw_text("Score", font_ranking, wet_asphalt , 730, 160)
-			print(data_easy_ranking, data_hard_ranking)
 			if data_easy_ranking is not None:
 				for i in range(0,size_of_easy_ranking):
 					draw_text(str(i+1), font_ranking, wet_asphalt , 40, 200 + 40*i)

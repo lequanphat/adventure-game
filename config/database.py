@@ -1,15 +1,21 @@
 from fastapi import FastAPI
 from dotenv import dotenv_values
 from pymongo import MongoClient
+from pymongo.errors import ConnectionFailure
 class database():
     def __init__(self):
-        self.myClient = MongoClient("mongodb+srv://quocvi1701:MysV_1701@cluster0.9sp9zvq.mongodb.net/?retryWrites=true&w=majority")
-        self.mydb= self.myClient["adventure-game"]
-        self.collection_name = self.mydb["statistic"]
-        self.is_insert = True
+        try:
+            self.myClient = MongoClient("mongodb+srv://lequanphat2003:lequanphat20032003@cluster0.plmsqac.mongodb.net/?retryWrites=true&w=majority")
+            self.mydb = self.myClient["adventure-game"]
+            self.collection_name = self.mydb["statistic"]
+            self.is_insert = True
+            print(f"Connection to MongoDB successfully.")
+        except ConnectionFailure as e:
+            print(f"Connection to MongoDB failed: {e}")
+
     def get_statistic(self):
         item_details = self.collection_name.find()
-        return item_details
+        return list(item_details)
         
     def save_statistic(self,name, score, level, mode):
         item_details = self.get_statistic()
