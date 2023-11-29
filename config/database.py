@@ -5,11 +5,11 @@ from pymongo.errors import ConnectionFailure
 class database():
     def __init__(self):
         try:
-            self.myClient = MongoClient("mongodb+srv://lequanphat2003:lequanphat20032003@cluster0.plmsqac.mongodb.net/?retryWrites=true&w=majority")
+            self.myClient = MongoClient()
             self.mydb = self.myClient["adventure-game"]
             self.collection_name = self.mydb["statistic"]
             self.is_insert = True
-            print(f"Connection to MongoDB successfully.")
+            print("Connection to MongoDB successfully.")
         except ConnectionFailure as e:
             print(f"Connection to MongoDB failed: {e}")
 

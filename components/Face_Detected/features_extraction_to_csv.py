@@ -66,29 +66,24 @@ def return_features_mean_personX(path_face_personX):
 
 def main():
     logging.basicConfig(level=logging.INFO)
-    #  Get the order of latest person
+
     person_list = os.listdir("data/data_faces_from_camera/")
     person_list.sort()
 
     with open("data/features_all.csv", "w", newline="") as csvfile:
         writer = csv.writer(csvfile)
         for person in person_list:
-            # Get the mean/average features of face/personX, it will be a list with a length of 128D
             logging.info("%sperson_%s", path_images_from_camera, person)
             features_mean_personX = return_features_mean_personX(path_images_from_camera + person)
 
             if len(person.split('_', 2)) == 2:
-                # "person_x"
                 person_name = person
             else:
-                # "person_x_tom"
                 person_name = person.split('_', 2)[-1]
             features_mean_personX = np.insert(features_mean_personX, 0, person_name, axis=0)
-            # features_mean_personX will be 129D, person name + 128 features
             writer.writerow(features_mean_personX)
             logging.info('\n')
         logging.info("Save all the features of faces registered into: data/features_all.csv")
-
 
 if "__main__" == __name__:
     main()
