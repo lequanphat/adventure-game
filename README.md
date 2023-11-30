@@ -50,3 +50,11 @@ $ conda install library/dlib-19.22.99-cp39-cp39-win_amd64.whl
 ## Demo
 ### Tự động đăng nhập bằng nhận diện khuôn mặt 
 ![GitHub Logo](/demo/1.jpg)
+### Màn hình trò chơi 
+![GitHub Logo](/demo/2.jpg)
+### Màn hình chỉnh sửa màn chơi
+![GitHub Logo](/demo/3.jpg)
+### Điều khiển bằng nhận dạng chuyển động bàn tay
+![GitHub Logo](/demo/4.jpg)
+### Đăng ký nhận diện khuôn mặt
+![GitHub Logo](/demo/5.jpg)
