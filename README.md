@@ -52,6 +52,8 @@ $ conda install library/dlib-19.22.99-cp39-cp39-win_amd64.whl
 ![GitHub Logo](/demo/1.jpg)
 ### Màn hình trò chơi 
 ![GitHub Logo](/demo/2.jpg)
+![GitHub Logo](/demo/6.jpg)
+![GitHub Logo](/demo/7.jpg)
 ### Màn hình chỉnh sửa màn chơi
 ![GitHub Logo](/demo/3.jpg)
 ### Điều khiển bằng nhận dạng chuyển động bàn tay
