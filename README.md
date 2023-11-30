@@ -48,3 +48,5 @@ Python 3.9
 $ conda install library/dlib-19.22.99-cp39-cp39-win_amd64.whl
 ```
 ## Demo
+### Tự động đăng nhập bằng nhận diện khuôn mặt 
+![GitHub Logo](/demo/1.jpg)
