@@ -12,7 +12,6 @@ path_images_from_camera = "data/data_faces_from_camera/"
 
 #  Use frontal face detector of Dlib
 detector = dlib.get_frontal_face_detector()
-
 #  Get face landmarks
 predictor = dlib.shape_predictor('data/data_dlib/shape_predictor_68_face_landmarks.dat')
 

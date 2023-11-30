@@ -77,11 +77,10 @@ class Face_Register:
         folders_rd = os.listdir(self.path_photos_from_camera)
         for i in range(len(folders_rd)):
             shutil.rmtree(self.path_photos_from_camera + folders_rd[i])
-        if os.path.isfile("data/features_all.csv"):
-            os.remove("data/features_all.csv")
+        
         self.label_cnt_face_in_database['text'] = "0"
         self.existing_faces_cnt = 0
-        self.log_all["text"] = "Face images and `features_all.csv` removed!"
+        self.log_all["text"] = "Face images removed!"
 
     def GUI_get_input_name(self):
         self.input_name_char = self.input_name.get()
@@ -108,15 +107,15 @@ class Face_Register:
         # Step 1: Clear old data
         tk.Label(self.frame_right_info,
                  font=self.font_step_title,
-                 text="Step 1: Clear face photos").grid(row=5, column=0, columnspan=2, sticky=tk.W, padx=5, pady=20)
+                 text="Reset images").grid(row=5, column=0, columnspan=2, sticky=tk.W, padx=5, pady=20)
         tk.Button(self.frame_right_info,
-                  text='Clear',
+                  text='Reset',
                   command=self.GUI_clear_data).grid(row=6, column=0, columnspan=3, sticky=tk.W, padx=5, pady=2)
 
         # Step 2: Input name and create folders for face
         tk.Label(self.frame_right_info,
                  font=self.font_step_title,
-                 text="Step 2: Input name").grid(row=7, column=0, columnspan=2, sticky=tk.W, padx=5, pady=20)
+                 text="Step 1: Input name").grid(row=7, column=0, columnspan=2, sticky=tk.W, padx=5, pady=20)
 
         tk.Label(self.frame_right_info, text="Name: ").grid(row=8, column=0, sticky=tk.W, padx=5, pady=0)
         self.input_name.grid(row=8, column=1, sticky=tk.W, padx=0, pady=2)
@@ -128,7 +127,7 @@ class Face_Register:
         # Step 3: Save current face in frame
         tk.Label(self.frame_right_info,
                  font=self.font_step_title,
-                 text="Step 3: Save face image").grid(row=9, column=0, columnspan=2, sticky=tk.W, padx=5, pady=20)
+                 text="Step 2: Save face image").grid(row=9, column=0, columnspan=2, sticky=tk.W, padx=5, pady=20)
 
         tk.Button(self.frame_right_info,
                   text='Save current face',
@@ -152,6 +151,7 @@ class Face_Register:
     def exit_window(self):
         self.delete_face_folder()
         self.win.destroy()  # Destroy the current window
+
     # Mkdir for saving photos and csv
     def pre_work_mkdir(self):
         # Create folders to save face images and csv
@@ -236,7 +236,7 @@ class Face_Register:
                 else:
                     self.log_all["text"] = "Please do not out of range!"
             else:
-                self.log_all["text"] = "No face in current frame!"
+                self.log_all["text"] = "No face or many faces in current frame!"
         else:
             self.log_all["text"] = "Please run step 2!"
 

@@ -11,7 +11,6 @@ font_ranking = pygame.font.SysFont('Bauhaus 93', 22)
 
 background1 = pygame.image.load('./resources/img/background1.png')
 background2 = pygame.image.load('./resources/img/background2.jpg')
-
 background1 = pygame.transform.scale(background1 , (800,800))
 background2 = pygame.transform.scale(background2 , (800,800))
 background = [background1, background2]
@@ -67,12 +66,16 @@ load_btn = pygame.transform.scale(load_btn , (130,40))
 logo = pygame.transform.scale(logo , (400,300))
 #load sounds
 
-# pygame.mixer.music.load('./resources/audio/music.wav')
-# pygame.mixer.music.play(-1, 0.0, 5000)
+pygame.mixer.music.load('./resources/audio/music.wav')
+pygame.mixer.music.play(-1, 0.0, 5000)
+
+
 coin_fx = pygame.mixer.Sound('./resources/audio/coin.wav')
 coin_fx.set_volume(0.5)
+
 jump_fx = pygame.mixer.Sound('./resources/audio/jump.wav')
 jump_fx.set_volume(0.5)
+
 game_over_fx = pygame.mixer.Sound('./resources/audio/game_over.wav')
 game_over_fx.set_volume(0.5)
 

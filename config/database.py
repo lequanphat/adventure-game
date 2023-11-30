@@ -5,7 +5,8 @@ from pymongo.errors import ConnectionFailure
 class database():
     def __init__(self):
         try:
-            self.myClient = MongoClient()
+            self.myClient = MongoClient("mongodb+srv://lequanphat2003:lequanphat20032003@cluster0.plmsqac.mongodb.net/?retryWrites=true&w=majority"
+)
             self.mydb = self.myClient["adventure-game"]
             self.collection_name = self.mydb["statistic"]
             self.is_insert = True

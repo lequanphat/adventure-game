@@ -1,3 +1,6 @@
+
+
+
 import dlib
 import numpy as np
 import cv2
@@ -279,20 +282,25 @@ class Player():
 			if pedding == False:
 				# key event
 				if mode== "EASY":
+
 					if key[pygame.K_SPACE] and self.jumped == False  and self.in_air == False:
 						jump_fx.play()
 						self.vel_y = -15
 						self.jumped = True
+
 					if key[pygame.K_SPACE] == False:
 						self.jumped = False
+
 					if key[pygame.K_LEFT]:
 						dx -= 5
 						self.counter += 1
 						self.direction = -1
+
 					if key[pygame.K_RIGHT]:
 						dx += 5
 						self.counter += 1
 						self.direction = 1
+
 					if key[pygame.K_LEFT] == False and key[pygame.K_RIGHT] == False:
 						self.counter = 0
 						self.index = 0
@@ -302,10 +310,12 @@ class Player():
 							self.image = self.images_left[self.index]
 				# hand event
 				elif mode == "HARD":
+
 					if up_action == True and self.jumped == False  and self.in_air == False:
 						jump_fx.play()
 						self.vel_y = -15
 						self.jumped = True
+						
 					if up_action == False:
 						self.jumped = False
 
@@ -524,21 +534,7 @@ class Face_Recognizer:
         return dist
 
     
-    # / Use centroid tracker to link face_x in current frame with person_x in last frame
-    def centroid_tracker(self):
-        for i in range(len(self.current_frame_face_centroid_list)):
-            e_distance_current_frame_person_x_list = []
-            #  For object 1 in current_frame, compute e-distance with object 1/2/3/4/... in last frame
-            for j in range(len(self.last_frame_face_centroid_list)):
-                self.last_current_frame_centroid_e_distance = self.return_euclidean_distance(
-                    self.current_frame_face_centroid_list[i], self.last_frame_face_centroid_list[j])
-
-                e_distance_current_frame_person_x_list.append(
-                    self.last_current_frame_centroid_e_distance)
-
-            last_frame_num = e_distance_current_frame_person_x_list.index(
-                min(e_distance_current_frame_person_x_list))
-            self.current_frame_face_name_list[i] = self.last_frame_face_name_list[last_frame_num]
+    
 
     #  cv2 window / putText on cv2 window
     def draw_note(self, img_rd):
@@ -668,9 +664,9 @@ with mp_hands.Hands(
 
 						for k in range(len(faces)):
 							logging.debug("  For face %d in current frame:", k + 1)
-							face_recognizer.current_frame_face_centroid_list.append(
-								[int(faces[k].left() + faces[k].right()) / 2,
-								int(faces[k].top() + faces[k].bottom()) / 2])
+							# face_recognizer.current_frame_face_centroid_list.append(
+							# 	[int(faces[k].left() + faces[k].right()) / 2,
+							# 	int(faces[k].top() + faces[k].bottom()) / 2])
 
 							face_recognizer.current_frame_face_X_e_distance_list = []
 
@@ -699,7 +695,6 @@ with mp_hands.Hands(
 							else:
 								logging.debug("  Face recognition result: Unknown person")
 
-			
 			screen.blit(logo, (screen_width // 2 - 200,20))
 			draw_text("Adventure", pygame.font.SysFont('Bauhaus 93', 100), (241, 196, 15), 190, 260)
 			draw_text("Player: "+player_name, font_main, (44, 62, 80), 250, 380)
@@ -759,11 +754,13 @@ with mp_hands.Hands(
 			#load and save level
 			if save_button.draw():
 				#save level data
+
 				pickle_out = open(f'./env/level{level}_data', 'wb')
 				pickle.dump(world_data, pickle_out)
 				pickle_out.close()
 				level = 1
 				world = reset_level(player, level)
+				
 				print('Save data here')
 			if load_button.draw():
 				#load in level data
@@ -918,11 +915,13 @@ with mp_hands.Hands(
 			#if player has completed the level
 			if game_over == 1:
 				level += 1
+
 				if load_world_data() != None:
 					my_background = load_background()
 					world_data = []
 					world = reset_level(player, level)
 					game_over = 0
+
 				else:
 					if accept_save_database == True:
 						if player_name != 'unknown':
